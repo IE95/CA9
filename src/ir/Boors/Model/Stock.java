@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Stock {
 	private String id ;
+	private int ownerId;
 	private List<Order> sellOrders;
 	private List<Order> buyOrders;
 
@@ -16,6 +17,17 @@ public class Stock {
 		this.sellOrders = sellOrders;
 		this.buyOrders = buyOrders;
 	}
+
+
+	public Stock(String id, int ownerId){
+		this.id = id;
+		this.ownerId = ownerId;
+		this.sellOrders = new LinkedList<Order>();
+		this.buyOrders = new LinkedList<Order>();
+	}
+
+
+
 
 	public Stock(String id) {
 		this.id = id;
@@ -48,6 +60,10 @@ public class Stock {
 
 	public String getId() {
 		return id;
+	}
+
+	public int getOwnerId(){
+		return this.ownerId;
 	}
 
 	public void setId(String id) {
