@@ -246,7 +246,7 @@ public class DAO {
 	public static void addNewStock()throws SQLException{
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();		
-		st.executeUpdate("insert into user values(" + user.getId() + ",'" + user.getName() + "','" + user.getFamily() + "'," + user.getBalance() + ")" );
+		st.executeUpdate("insert into pending_stock values(" + user.getId() + ",'" + user.getName() + "','" + user.getFamily() + "'," + user.getBalance() + ")" );
 		con.close();
 	}
 
