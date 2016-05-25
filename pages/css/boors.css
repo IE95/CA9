@@ -1,0 +1,64 @@
+/*html{
+    direction : rtl;
+}
+
+label.control-label{
+    float:right;
+}
+
+div.form-group div{
+    float:right;
+
+}
+
+*/
+
+.jumbotron h1{
+	color: green;
+}
+
+.container .container{
+	margin:30px;
+}
+
+label{
+	font-size: 18px;
+	font-weight: 500;
+}
+
+.refresh-button{
+	margin: 15px;
+}
+
+.error-msg{
+	color: red;
+	padding: 15px;
+	float: left;
+}
+
+.modal-body{
+	/*padding: 30px;*/
+}
+
+.modal-footer button{
+	float: left;
+}
+
+.success-message{
+	color: green;
+}
+
+.input-group{
+	margin-top: 7px;
+}
+
+.borderless td, .borderless th {
+    border: none;
+}
+
+
+.margin{
+	margin : 10px;
+}
+
+

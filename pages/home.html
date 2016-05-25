@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>boors</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/boors.css"/>
+  <script type="text/javascript" src="js/jquery.min.js"></script> 
+  <script type="text/javascript" src="js/bootstrap.min.js"></script> 
+</head>
+
+<body ng-app="boors" ng-controller="BoorsController as ctrl" >
+
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Bourse System</a>
+      </div>
+      <div class="col-xs-2">
+        <div class="input-group">
+          <input ng-model="loginId" type="text" class="form-control" placeholder="User Id">
+          <span class="input-group-btn">
+            <button ng-click="ctrl.login()" class="btn btn-default  btn-group" type="submit"><i class="glyphicon glyphicon-log-in"></i></button>
+          </span>
+        </div> 
+      </div>
+      <span class="error-msg">{{loginErrorMessage}}</span>
+
+    </div>
+  </nav>
+
+
+
+
+  <div ng-show="ctrl.user.id !== null" class="jumbotron">
+    <div class="container">
+      <h1 >User Info</h1>
+      <div class="container">
+        <div class="container-fluid"><label class="col-xs-2">Id</label>{{ctrl.user.id}}</div><br/>
+        <div class="container-fluid"><label class="col-xs-2">Name</label> {{ctrl.user.name}} </div><br/>
+        <div class="container-fluid"><label class="col-xs-2">Family</label> {{ctrl.user.family}} </div><br/>
+        <div class="container-fluid"><label class="col-xs-2">Balance</label> {{ctrl.user.balance}} </div><br/>
+        <div class="container-fluid"><label class="col-xs-2">Shares</label>
+          <table class="col-xs-2">
+            <tr ng-repeat="currShare in ctrl.user.shares">
+              <td>{{currShare.name}}</td>
+              <td> {{currShare.quan}}</td>
+            </tr>
+          </table>
+        </div><br/>
+        <div class="container-fluid"><label class="col-xs-2">Requests</label>
+          <table class="col-xs-3">
+            <tr ng-repeat="currReq in ctrl.user.reqs">
+              <td><b>{{currReq.type}}</b></td>
+              <td>{{currReq.quan}}</td>
+              <td>shares of</td>
+              <td>{{currReq.symbol}}</td>
+              <td>${{currReq.price}}</td> 
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="jumbotron">
+    <div class="container">
+      <h1>Market Status</h1>
+      <div class="container">
+        <div ng-repeat="currStock in ctrl.stocks" class="container-fluid"><label class="col-xs-2"><u>{{currStock.symbol}}</u></label>
+          <table class="col-xs-4">
+            <tr ng-repeat="currOrder in currStock.sellList">
+              <td>&bull;</td>
+              <td>userId {{currOrder.userId}}</td> 
+              <td>{{currOrder.quan}}</td>
+              <td>shares</td>
+              <td>${{currOrder.price}}</td>
+              <td><b>{{currOrder.type}}</b></td>
+            </tr>
+          </table>
+
+          <table class="col-xs-4 col-xs-offset-2">
+            <tr ng-repeat="currOrder in currStock.buyList">
+              <td>&bull;</td>
+              <td>userId {{currOrder.userId}}</td> 
+              <td>{{currOrder.quan}}</td>
+              <td>shares</td>
+              <td>${{currOrder.price}}</td>
+              <td><b>{{currOrder.type}}</b></td>
+            </tr>
+          </table>
+          <br/></br/><br/><br/>
+        </div>
+        <br/>
+
+        <div class="container-fluid"><button ng-click="ctrl.refresh()" class="refresh-button btn btn-primary"><span class="glyphicon glyphicon-refresh"></span></button></div>
+
+        <div ng-show=" loadStocksErrorMessage.length !==0 " class="container-fluid"><span class="error-msg">{{loadStocksErrorMessage}}</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="jumbotron">
+    <div class="container">
+      <h1>Stock List</h1>
+      <div class="container">
+        <div class="list-group">
+          <a ng-click="ctrl.selectStock(currStock.symbol)" data-toggle="modal" data-target="#RequestTrade" data-backdrop="static" ng-repeat="currStock in ctrl.stocks | orderBy:'symbol'" class="list-group-item">{{currStock.symbol}}</a>   
+        </div>
+         //changed 
+
+        <div>
+          <form name="stock_name">
+            <input type="text" class="form-control margin col-xs-4" ng-model="newStock" >
+          </from>
+          <button type="button" class="btn btn-success margin" ng-click="stock_name.$valid && ctr.addNewStock()" >Success</button>
+        </div>
+
+      //changed
+      </div>
+    </div>
+  </div>
+
+
+
+<div id="RequestTrade" class="modal fade container">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Request Buy/Sell</h4>
+      </div>
+
+      <div class="modal-body">
+        <form name="tradeForm" role="form" class="form-horizontal" novalidate>
+            <div class="form-group">
+                <label class="col-xs-2 control-label">Name</label>
+                <div class="col-xs-10">
+                  <p class="form-control-static">{{ctrl.selectedStock}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="quantity" class="col-xs-2 control-label">Quantity</label>
+                <div class="col-xs-10">
+                  <input type="number" name="quantity" class="form-control" id="quantity" ng-model="quantity" required />
+                </div>
+                <div class="help-block col-xs-offset-2" ng-messages="tradeForm.quantity.$error" ng-if="tradeForm.quantity.$touched">
+                  <div ng-message="required" class="error-msg">You must enter a quantity for your request.</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="price" class="col-xs-2 control-label">Price</label>
+                <div class="col-xs-10">
+                  <input type="number" name="price"class="form-control" id="price" ng-model="price" required/>
+                </div>  
+                <div class="col-xs-offset-2" ng-messages="tradeForm.price.$error" ng-if="tradeForm.price.$touched">
+                  <div ng-message="required" class="error-msg">You must enter a price for your request.</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="method" class="col-xs-2 control-label">Method</label>
+                 <div class="col-xs-10">
+                  <select name="method" name="method" class="form-control" id="method" ng-model="method" required>
+                      <option value="GTC">GTC</option>
+                      <option value="IOC">IOC</option>
+                      <option value="MPO">MPO</option>
+                  </select>
+                </div>
+                <div class="col-xs-offset-2" ng-messages="tradeForm.method.$error" ng-if="tradeForm.method.$touched">
+                  <div ng-message="required" class="error-msg">You must select a trade method for your request.</div>
+                </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button ng-disabled="ctrl.user.id===null" class="btn btn-primary" type="submit" ng-click="tradeForm.$valid && ctrl.doTrade('buy')">Buy</button>
+        <button class="btn btn-primary" type="submit" ng-click="tradeForm.$valid && ctrl.doTrade('sell')">Sell</button>
+        <div class="error-msg">{{reqErrorMessage}}</div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div ng-show="ctrl.user.id === 1" class="jumbotron">
+    <div class="container">
+      <h1>Records</h1>
+      <div class="container">        
+        <form class="container-fluid" ng-show=" ctrl.records.length>0">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
+              <input type="text" class="form-control" placeholder="Search" ng-model="searchInput">
+            </div>      
+          </div>
+        </form>
+        <div class="container-fluid">
+          <table class="col-xs-12 table table-hover">
+            <tr ng-repeat="currRecord in ctrl.records | orderBy:'date' | filter:searchInput">
+              <td>&bull;</td>
+              <td>userId <b>{{currRecord.seller.id}}</b></td> 
+              <td>sold</td>
+              <td>{{currRecord.quan}}</td>
+              <td>shares of</td>
+              <td>{{currRecord.symbol}}</td>
+              <td>${{currRecord.price}}</td>
+              <td>to</td>
+              <td>userId <b>{{currRecord.buyer.id}}</b></td> 
+              <td>on</td>
+              <td>{{currRecord.date}}</td>
+              <td>method</td>
+              <td>{{currRecord.method}}</td>
+            </tr>
+          </table>
+        </div> 
+        <div ng-show=" loadRecordsErrorMessage.length !==0 " class="container-fluid"><span class="error-msg">{{loadRecordsErrorMessage}}</span>
+        </div>        
+      </div>
+    </div>
+  </div>
+
+
+ 
+
+
+
+
+
+
+
+ 
+
+
+
+  <script type="text/javascript" src="js/angular.min.js"></script> 
+  <script type="text/javascript" src="js/angular-messages.min.js"></script>
+  <script type="text/javascript" src="js/app.js"></script> 
+
+</body>
+</html>
