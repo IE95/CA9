@@ -113,8 +113,10 @@
          //changed 
 
         <div>
-          <input type="text" class="form-control margin col-xs-4" ng-model="newStock" >
-          <button type="button" class="btn btn-success margin">Success</button>
+          <form name="stock_name">
+            <input type="text" class="form-control margin col-xs-4" ng-model="newStock" >
+          </from>
+          <button type="button" class="btn btn-success margin" ng-click="stock_name.$valid && ctr.addNewStock()" >Success</button>
         </div>
 
       //changed

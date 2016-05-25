@@ -7,4 +7,28 @@
 <!--        <servlet-name>addUser</servlet-name>-->
 <!--        <url-pattern>/</url-pattern>-->
 <!--    </servlet-mapping>-->
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Home</web-resource-name>
+			<url-pattern>/home.html</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/login.jsp</form-login-page>
+			<form-error-page>/login-error.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
+
+	<security-role>
+		<role-name>admin</role-name>
+	</security-role>	
+
 </web-app>
+
