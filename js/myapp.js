@@ -14,6 +14,7 @@
         this.searchInput = ""
 ////////////////////////sss
         this.depositRequests = []
+        this.foundUserProfile = null ;
 ////////////////////////fff
 
 
@@ -24,7 +25,7 @@
 //////////////////////////// sssss
         $scope.depositRequestResMsg = "" ;
         $scope.loadDepositRequestsErrMsg = "" ;
-
+        $scope.loadUserProfileErrMsg = "" ;
 /////////////////////// fffff
 
 
@@ -203,6 +204,22 @@
             }).error(function(error){
                 $scope.loadDepositRequestsErrMsg = error ;
             });
+        }
+
+        this.getUserProfile = function(userId){            
+            $http.get('http://localhost:8080/boors/getUserProfile?userId=' + userId).success(function(response) {
+                if(response.result === 1){
+                    boorsCtrl.foundUserProfile = response.userProfile;
+                    $scope.loadUserProfileErrMsg = "" ;
+                }else{
+                    $scope.loadUserProfileErrMsg = response.errMsg;
+                }
+                $scope.searchUserId = "";
+            }).error(function(error){
+                $scope.loadUserProfileErrMsg = error;
+                $scope.searchUserId = "";
+
+            }); 
         }
 
 

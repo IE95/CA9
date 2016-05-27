@@ -103,7 +103,57 @@
       </div>
   </div>
 
+  <div ng-show="ctrl.user.id !== null" class="jumbotron">
+      <div class="container">
+        <h1 >Users Profile</h1>
+        <div class="container">
+          <div class="container-fluid">
+            <form class="form-inline">
+              <div class="form-group">
+                <input ng-model="searchUserId" type="text" class="form-control" placeholder="User id">
+              </div>
+              <button ng-click="ctrl.getUserProfile(searchUserId)" type="submit" class="btn btn-primary">Search</button>
+              <span class="help-inline error-msg-inline">{{loadUserProfileErrMsg}}</span>
+            </form>
+          </div><br/><br/>
+          <div ng-show="ctrl.foundUserProfile !==null">
+            <div class="container-fluid"><label class="col-xs-2">Id</label>{{ctrl.foundUserProfile.id}}</div><br/>
+            <div class="container-fluid"><label class="col-xs-2">Name</label> {{ctrl.foundUserProfile.name}} </div><br/>
+            <div class="container-fluid"><label class="col-xs-2">Family</label> {{ctrl.foundUserProfile.family}} </div><br/>
+            <div class="container-fluid"><label class="col-xs-2">Balance</label> {{ctrl.foundUserProfile.balance}} </div><br/>
+            <div class="container-fluid"><label class="col-xs-2">Shares</label>
+              <table class="col-xs-2">
+                <tr ng-repeat="currShare in ctrl.foundUserProfile.shares">
+                  <td>{{currShare.name}}</td>
+                  <td> {{currShare.quan}}</td>
+                </tr>
+              </table>
+            </div><br/>
 
+            <div class="container-fluid"><label class="col-xs-2">Deposit Reqs</label>
+              <table class="col-xs-2">
+                <tr ng-repeat="currReq in ctrl.foundUserProfile.depositRequests">
+                  <td>request</td>
+                  <td>${{currReq.amount}}</td> 
+                </tr>
+              </table>
+            </div><br/>
+
+            <div class="container-fluid"><label class="col-xs-2">Requests</label>
+              <table class="col-xs-3">
+                <tr ng-repeat="currReq in ctrl.foundUserProfile.reqs">
+                  <td><b>{{currReq.type}}</b></td>
+                  <td>{{currReq.quan}}</td>
+                  <td>shares of</td>
+                  <td>{{currReq.symbol}}</td>
+                  <td>${{currReq.price}}</td> 
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
 
 
   <script type="text/javascript" src="js/angular.min.js"></script> 
