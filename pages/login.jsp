@@ -1,3 +1,5 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ page isELIgnored="false" %>    
 <html>
 	<head>
 		<title>Login</title>
@@ -19,6 +21,13 @@
 					<input name="Submit" type="submit" value='Login'/>
 					</td>
 				</tr>
+				<c:if test="${not empty param.hasError}">
+					<tr>
+						<td colspan=2>
+							<p style="color:red">Unknown username or password<p>
+						</td>
+					</tr>
+				</c:if>
 			</table>
 		</form>
 	</body>

@@ -1,9 +1,3 @@
-<html>
-	<head>
-		<title>Login Error!</title>
-	</head>
-	<body>
-		Unknown username or password!<p>
-	</body>
-</html>
-
+<jsp:forward page="login.jsp">
+  <jsp:param name="hasError" value="1" ></jsp:param>
+</jsp:forward>
