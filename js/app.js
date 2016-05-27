@@ -167,6 +167,18 @@
             });
         }
 
+        this.setLimitation = function(){
+            var data = $.param({
+                limit: $scope.transactionLimitation
+            });
+            $http.post('/boors/setLimit',data,boorsCtrl.config
+                ).success(function(response){
+                    $scope.limitResponse = response;
+                }).error(function(error){
+                    alert(error);   
+            });
+        }
+
         this.getStockList("all");
         stop = $interval(function() {boorsCtrl.getStockList("all");}, 15000);
 

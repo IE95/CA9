@@ -76,10 +76,15 @@ public class TradeHandler extends HttpServlet {
 				}							
 			}
 			try{
-				typeHandler = Class.forName("ir.Boors.ServiceHandler.OpTypeHandler." + type + "Handler");
 				Order order = new Order(-1,stock.getId(), user, quantity, price, command, type);
-				Method handler = typeHandler.getMethod("handle",Order.class,List.class,List.class);
-				messages.addAll((List<String>)handler.invoke(null,order,stock.getSellOrders(),stock.getBuyOrders()));
+				// if(order.getOrderValue()>DAO.getLimit()){
+					// DAO.addExpensiveOrder(order);
+				// }
+				// else{
+					typeHandler = Class.forName("ir.Boors.ServiceHandler.OpTypeHandler." + type + "Handler");
+					Method handler = typeHandler.getMethod("handle",Order.class,List.class,List.class);
+					messages.addAll((List<String>)handler.invoke(null,order,stock.getSellOrders(),stock.getBuyOrders()));
+				// }
 			}catch(Exception ex){
 				messages.add("Invalid type");
 				ex.printStackTrace();

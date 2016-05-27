@@ -144,4 +144,7 @@ public class Order implements Comparable<Order>{
 	public void setOpType(String opType) {
 		this.opType = opType;
 	}
+	public int getOrderValue(){
+		return quantity*price;
+	}
 }

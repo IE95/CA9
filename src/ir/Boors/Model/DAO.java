@@ -293,5 +293,44 @@ public class DAO {
 	}
 
 
+	public static void setLimit(int limit) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery("select * from config where name='limit'");
+		if(rs.next()){
+			st.executeUpdate("update config set value=" + limit + " where name='limit'");	
+		}
+		else{
+			st.executeUpdate("insert into config values ('limit',"+limit+")");
+		}
+		con.close();
+	}
+
+	public static int getLimit()throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery("select * from config where name='limit'");
+		if(rs.next()){
+			int limit = rs.getInt("value");
+			return limit;	
+		}
+		else{
+			return -1;
+		}
+	}
+
+	public static void addExpensiveOrder(Order order)throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		st.executeUpdate("insert into request values ("+nextId("expensive_request") + ",'" 
+																	+ order.getStockId() + "',"
+																	+ order.getUser().getId() + ","
+																	+ order.getQuantity() + "," 
+																	+ order.getPrice() + ",'" 
+																	+ order.getOrderType() + "','" 
+																	+ order.getOpType() + "')");
+		con.close();
+	}
+
 
 }

@@ -257,7 +257,14 @@
   </table>
 
 
- 
+  <div class="col-xs-4">
+    <p class="margin"> transaction Limitation </p>
+    <form name="limitation">
+      <input type="text" class="form-control margin" ng-model="transactionLimitation" placeholder="transaction limitation" required/>
+    </form>
+    <p>{{limitResponse}}</p>
+    <button  class="margin btn btn-success" ng-click="limitation.$valid && ctrl.setLimitation()">set Limitation</button>
+  </div>
 
 
 
