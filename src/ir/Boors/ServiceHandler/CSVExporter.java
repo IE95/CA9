@@ -19,6 +19,9 @@ import java.sql.*;
 public class CSVExporter extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+		String json = "{\"result\":" ;
+		String message = "" ;
+		boolean hasError = false;
 		try {
 			List<Record> records = DAO.getRecords();
 			File file = new File(getServletContext().getRealPath("/")+"backup.csv");
@@ -30,15 +33,26 @@ public class CSVExporter extends HttpServlet {
 				pw.println(record.toString());	
 			}
 			pw.close();
-			req.setAttribute("message", "فایل backup.csv با موفقیت در webapps/boors ساخته شد");
+			message = "backup.csv successfully created in webapps/boors";
 		}catch(IOException e){
 			e.printStackTrace();
-			req.setAttribute("message", "اشکال در ساخت فایل backup.csv");
+			hasError = true;
+			message = "error in creating backup.csv file";
 		}catch(SQLException e){
 			e.printStackTrace();
-			req.setAttribute("message", "خطا در ارتباط با پایگاه داده");
+			hasError = true;
+			message =  "db problem";
 		}
-		req.getRequestDispatcher("exportResult.jsp").forward(req, resp);
+		if(hasError){
+			json+="0,\"message\":\"" + message + "\"";
+			json+="}";
+		}else{
+			json+="1,\"message\":\"" + message + "\"";
+			json+="}";			
+		}
+		resp.setContentType("text/html");
+        PrintWriter out = resp.getWriter();
+        out.println(json);		
 	}
 
 	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {

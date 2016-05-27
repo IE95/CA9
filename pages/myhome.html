@@ -103,6 +103,50 @@
       </div>
   </div>
 
+
+  <div ng-show="ctrl.user.id === 1" class="jumbotron">
+    <div class="container">
+      <h1>Records</h1>
+      <div class="container">        
+        <form class="container-fluid" ng-show=" ctrl.records.length>0">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
+              <input type="text" class="form-control" placeholder="Search" ng-model="searchInput">
+            </div>      
+          </div>
+        </form>
+        <div class="container-fluid">
+          <table class="col-xs-12 table table-hover">
+            <tr ng-repeat="currRecord in ctrl.records | orderBy:'date' | filter:searchInput">
+              <td>&bull;</td>
+              <td>userId <b>{{currRecord.seller.id}}</b></td> 
+              <td>sold</td>
+              <td>{{currRecord.quan}}</td>
+              <td>shares of</td>
+              <td>{{currRecord.symbol}}</td>
+              <td>${{currRecord.price}}</td>
+              <td>to</td>
+              <td>userId <b>{{currRecord.buyer.id}}</b></td> 
+              <td>on</td>
+              <td>{{currRecord.date}}</td>
+              <td>method</td>
+              <td>{{currRecord.method}}</td>
+            </tr>
+          </table>
+        </div> 
+        
+        <div class="container-fluid">
+          <button ng-click="ctrl.getBackup()" class="btn btn-primary">Backup</button>
+          <span class="help-inline error-msg-inline">{{getBackupResMsg}}</span>
+        </div>
+
+        <div ng-show=" loadRecordsErrorMessage.length !==0 " class="container-fluid"><span class="error-msg">{{loadRecordsErrorMessage}}</span>
+        </div>        
+      </div>
+    </div>
+  </div>
+
   <div ng-show="ctrl.user.id !== null" class="jumbotron">
       <div class="container">
         <h1 >Users Profile</h1>
