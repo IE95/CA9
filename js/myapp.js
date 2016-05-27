@@ -27,6 +27,7 @@
         $scope.loadDepositRequestsErrMsg = "" ;
         $scope.loadUserProfileErrMsg = "" ;
         $scope.addRoleResMsg = "" ;
+        $scope.getBackupResMsg = "" ;
 /////////////////////// fffff
 
 
@@ -243,6 +244,13 @@
             });            
         }
 
+        this.getBackup = function(){
+            $http.get('http://localhost:8080/boors/export').success(function(response) {
+                $scope.getBackupResMsg = response.message;
+            }).error(function(error){
+                $scope.loadUserProfileErrMsg = error;
+            });            
+        }
 
         this.getUserInfo();
 //////////////////////////////ffffff
