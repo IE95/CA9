@@ -31,7 +31,7 @@ public class AddDepositRequest extends HttpServlet {
 				hasError = true ;
 				message = "user not found" ;
 			}else{
-				myDAO.addDepositRequest(new DepositRequest(userId,amount));
+				DAO.addDepositRequest(new DepositRequest(userId,amount));
 				message = "request registered successfully" ;				
 			}
 		}catch (NumberFormatException e) {

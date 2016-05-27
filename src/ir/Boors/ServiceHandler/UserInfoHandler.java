@@ -27,8 +27,8 @@ public class UserInfoHandler extends HttpServlet {
 				errMsg = "wrong id";	
 			}else{
 				DAO.loadUserOrders(user);
-				myDAO.loadUserDepositRequests(user);
-				myDAO.loadUserRoles(user);
+				DAO.loadUserDepositRequests(user);
+				DAO.loadUserRoles(user);
 			}
 		}catch(NumberFormatException e){
 			hasError = true;

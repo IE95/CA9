@@ -36,11 +36,11 @@ public class AddUserRole extends HttpServlet {
 					hasError = true ;
 					message = "user not found" ;
 				}else{
-					if(myDAO.hasUserRole(userId,role)){
+					if(DAO.hasUserRole(userId,role)){
 						hasError = true ;
 						message = "user already have role " + role ;	
 					}else{
-						myDAO.addUserRole(userId,role);
+						DAO.addUserRole(userId,role);
 					}
 				}
 			}

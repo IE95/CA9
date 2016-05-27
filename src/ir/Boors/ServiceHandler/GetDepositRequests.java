@@ -16,7 +16,7 @@ public class GetDepositRequests extends HttpServlet {
 	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		String json = "{\"result\":1,\"depositRequests\":[" ;
 		try{
-			for (DepositRequest dr : myDAO.getDepositRequests()) {
+			for (DepositRequest dr : DAO.getDepositRequests()) {
 				json+= dr.getJson() ;
 				json+=",";				
 			}

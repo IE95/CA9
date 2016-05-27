@@ -33,8 +33,8 @@ public class UserAdder extends HttpServlet {
 				message = "Repeated id";			
 				hasError = true ;
 			}else{				
-				myDAO.addUser(new User(id,name,family,email,password));
-				myDAO.addUserRole(id,"user");
+				DAO.addUser(new User(id,name,family,email,password));
+				DAO.addUserRole(id,"user");
 				message = "New user is added" ;
 			}
 		}catch(NumberFormatException e){

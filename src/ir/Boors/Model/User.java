@@ -18,11 +18,11 @@ public class User {
 	private List<DepositRequest> depositRequests;
 	private List<String> roles; 
 	
-	public User(int id,String name ,String family,int balance,Map<String,Integer> sharesAmount) {
+	public User(int id,String name ,String family,String email,int balance,Map<String,Integer> sharesAmount) {
 		this.id = id;
 		this.name = name;
 		this.family = family;
-		this.email = "aa";
+		this.email = email;
 		this.balance = balance;
 		this.sharesAmount = sharesAmount;
 		this.orders = new LinkedList<Order>();

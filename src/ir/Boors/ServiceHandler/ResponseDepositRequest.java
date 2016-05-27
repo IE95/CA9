@@ -27,7 +27,7 @@ public class ResponseDepositRequest extends HttpServlet {
 			message = "unknown command";
 			throw new NumberFormatException();
 		}
-		DepositRequest dr = myDAO.findDepositRequestById(requestId);
+		DepositRequest dr = DAO.findDepositRequestById(requestId);
 		if(dr == null){
 			message = "request not found";
 			throw new NumberFormatException();
@@ -41,7 +41,7 @@ public class ResponseDepositRequest extends HttpServlet {
 			user.deposit(dr.getAmount());
 			DAO.updateUserInfo(user);
 		}
-		myDAO.deleteDepositRequest(requestId);
+		DAO.deleteDepositRequest(requestId);
 	}catch (NumberFormatException e) {
 		e.printStackTrace();
 		if(message.equals(""))

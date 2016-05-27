@@ -33,7 +33,7 @@ public class DAO {
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();
 		ResultSet rs = st.executeQuery("select * from user where id = " + id);
-		String name,family;
+		String name,family,email;
 		int balance ;
 		Map<String,Integer> sharesAmount = new HashMap<String, Integer>();
 		if(!rs.next()){
@@ -42,12 +42,13 @@ public class DAO {
 		name = rs.getString("name");
 		family = rs.getString("family");
 		balance = rs.getInt("balance");
+		email = rs.getString("email");
 		rs = st.executeQuery("select * from share where user_id = " + id);
 		while(rs.next()){
 			sharesAmount.put(rs.getString("stock_id"),rs.getInt("quantity"));
 		}
 		con.close();
-		return new User(id,name,family,balance,sharesAmount);
+		return new User(id,name,family,email,balance,sharesAmount);
 	}
 
 	public static int nextId(String table) throws SQLException {
@@ -163,7 +164,7 @@ public class DAO {
 	public static void addUser(User user) throws SQLException{
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();		
-		st.executeUpdate("insert into user values(" + user.getId() + ",'" + user.getName() + "','" + user.getFamily() + "'," + user.getBalance() + ")" );
+		st.executeUpdate("insert into user values(" + user.getId() + ",'" + user.getPassword() +"','" + user.getName() + "','" + user.getFamily() + "','"+user.getEmail()+"'," + user.getBalance() + ")" );
 		con.close();
 	}
 
@@ -390,6 +391,90 @@ public class DAO {
 		}
 		return shares;	
 	}
+
+
+
+
+
+	public static void addDepositRequest(DepositRequest dr) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();
+		st.executeUpdate("insert into deposit_req values(" + nextId("deposit_req") + "," + dr.getUserId() + "," + dr.getAmount() + ")" );
+		con.close();
+	}
+
+	public static void loadUserDepositRequests(User user) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		ResultSet rs = st.executeQuery("select * from deposit_req where user_id=" + user.getId());
+		user.clearDepositRequests();
+		while(rs.next()){
+			user.addDepositRequest(new DepositRequest(rs.getInt("id"),rs.getInt("user_id"),rs.getInt("amount")));
+		}
+		con.close();		
+	}	
+
+	public static void loadUserRoles(User user) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		ResultSet rs = st.executeQuery("select * from user_role where id=" + user.getId());
+		user.clearRoles();
+		while(rs.next()){
+			user.addRole(rs.getString("role"));
+		}
+		con.close();		
+	}		
+
+	public static DepositRequest findDepositRequestById(int requestId) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		ResultSet rs = st.executeQuery("select * from deposit_req where id=" + requestId);
+		if(rs.next()){
+			con.close();
+			return new DepositRequest(rs.getInt("id"),rs.getInt("user_id"),rs.getInt("amount"));
+		}else{
+			con.close();
+			return null ;
+		}
+	}
+
+	public static List<DepositRequest> getDepositRequests() throws SQLException{
+		List<DepositRequest> requests = new LinkedList<DepositRequest>(); 
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		ResultSet rs = st.executeQuery("select * from deposit_req");
+		while(rs.next()){
+			requests.add(new DepositRequest(rs.getInt("id"),rs.getInt("user_id"),rs.getInt("amount")));
+		}
+		con.close();
+		return requests;
+	}
+
+	public static void deleteDepositRequest(int requestId) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		st.executeQuery("delete from deposit_req where id=" + requestId);
+		con.close();
+	}
+
+	public static boolean hasUserRole(int userId,String role) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		ResultSet rs =st.executeQuery("select * from user_role where id=" + userId + " and role='" + role + "'");
+		con.close();
+		if(rs.next())
+			return true;
+		else
+			return false;
+	}
+
+	public static void addUserRole(int userId,String role) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		st.executeQuery("insert into user_role values(" + userId + ",'" + role + "')");
+		con.close();
+	}
+
 
 
 

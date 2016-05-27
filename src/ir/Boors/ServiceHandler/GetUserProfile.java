@@ -29,7 +29,7 @@ public class GetUserProfile extends HttpServlet {
 				errMsg = "wrong id";	
 			}else{
 				DAO.loadUserOrders(user);
-				myDAO.loadUserDepositRequests(user);
+				DAO.loadUserDepositRequests(user);
 			}
 		}catch(NumberFormatException e){
 			hasError = true;
