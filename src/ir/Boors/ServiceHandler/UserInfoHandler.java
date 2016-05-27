@@ -22,13 +22,14 @@ public class UserInfoHandler extends HttpServlet {
 		boolean hasError = false ;
 		User user = null;
 		try{
-			id = Integer.parseInt(req.getParameter("id"));
+			id = Integer.parseInt(req.getUserPrincipal().getName());
 			user = DAO.serachUser(id);
 			if(user==null){
 				hasError = true;
 				errMsg = "wrong id";	
 			}else{
 				DAO.loadUserOrders(user);
+				myDAO.loadUserDepositRequests(user);
 			}
 		}catch(NumberFormatException e){
 			hasError = true;

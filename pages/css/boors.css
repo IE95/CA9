@@ -36,6 +36,11 @@ label{
 	float: left;
 }
 
+.error-msg-inline{
+	color: red;
+	margin: 15px;
+}
+
 .modal-body{
 	/*padding: 30px;*/
 }

@@ -13,6 +13,8 @@ public class User {
 	private int balance ;
 	private Map<String,Integer> sharesAmount ;
 	private List<Order> orders;	
+	private List<DepositRequest> depositRequests;
+
 	
 	public User(int id,String name ,String family,int balance,Map<String,Integer> sharesAmount) {
 		this.id = id;
@@ -21,6 +23,7 @@ public class User {
 		this.balance = balance;
 		this.sharesAmount = sharesAmount;
 		this.orders = new LinkedList<Order>();
+		this.depositRequests = new LinkedList<DepositRequest>();
 	}
 
 	public User(int id,String name ,String family) {
@@ -30,6 +33,7 @@ public class User {
 		this.balance = 0;
 		this.sharesAmount = new HashMap<String, Integer>();
 		this.orders = new LinkedList<Order>();
+		this.depositRequests = new LinkedList<DepositRequest>();
 	}
 
 	public User(int id){
@@ -80,7 +84,15 @@ public class User {
 				it.remove();
 			}
 		}
-	}	
+	}
+
+	public void addDepositRequest(DepositRequest dr){
+		depositRequests.add(dr);
+	}
+
+	public void clearDepositRequests(){
+		depositRequests.clear();
+	}
 
 	public int getId() {
 		return id;
@@ -119,6 +131,14 @@ public class User {
 		if(json.charAt(json.length()-1) == ',')
 			json = json.substring(0,json.length()-1);
 		json+="],";
+		json+= "\"depositRequests\":[" ;
+		for(DepositRequest dr : depositRequests){
+			json+= dr.getJson() ;
+			json+=",";
+		}
+		if(json.charAt(json.length()-1) == ',')
+			json = json.substring(0,json.length()-1);
+		json+="],";
 		json+= "\"reqs\":[" ;
 		for(Order o : orders){
 			json+= o.getJson() ;
@@ -130,4 +150,5 @@ public class User {
 		json+="}";		
 		return json;
 	}
+
 }

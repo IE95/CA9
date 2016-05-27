@@ -15,6 +15,7 @@
 		<web-resource-collection>
 			<web-resource-name>Home</web-resource-name>
 			<url-pattern>/home.html</url-pattern>
+			<url-pattern>/myhome.html</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>
