@@ -10,6 +10,7 @@
         this.stocks = [] ;
         this.selectedStock = "";
         this.records = [] ;
+        this.pendingStocks = [];
         this.searchInput = ""
 
         $scope.reqErrorMessage = "" ;
@@ -111,6 +112,14 @@
         }
 
 
+        this.getPendingStocks = function(){
+            $http.get('/boors/getPendingStock')
+            .success(function(stocksData) {
+                boorsCtrl.pendingStocks = stocksData;
+            }).error(function(data, status) {
+                alert("error" +status);
+            });   
+        }();
        
 
         this.addNewStock = function(){
@@ -127,6 +136,7 @@
             });
 
             $scope.newPendingStock = ""
+            boorsCtrl.getPendingStocks();
         }
 
         this.getStockList("all");

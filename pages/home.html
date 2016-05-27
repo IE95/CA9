@@ -225,6 +225,22 @@
   </div>
 
 
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Owner Id</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="stock in ctrl.pendingStocks">
+        <td>{{stock.symbol}}</td>
+        <td>{{stock.ownerId}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
  
 
 

@@ -28,7 +28,7 @@ public class addNewPendingStock extends HttpServlet {
 			
 			
 			if(s!=null){	
-				message = "Repeated id";			
+				message = "Repeated Stock";			
 				hasError = true ;
 			}else{				
 				DAO.addPendingStock(new Stock(name,ownerId));

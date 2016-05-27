@@ -38,6 +38,7 @@ public class Stock {
 	public String getJson(){
 		String json = "{" ;
 		json+= "\"symbol\":\"" + id + "\"," ;
+		json+= "\"ownerId\": "+ownerId+",";
 		json+= "\"sellList\":[" ;
 		for(Order o : sellOrders){
 			json+= o.getJson() ;

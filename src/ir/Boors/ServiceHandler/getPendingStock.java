@@ -1,0 +1,53 @@
+package ir.Boors.ServiceHandler;
+import ir.Boors.Model.*;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+
+import java.io.*;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.LinkedList;
+import java.sql.*;
+
+
+@WebServlet("/getPendingStock")
+public class getPendingStock extends HttpServlet {
+	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+		String name;
+		boolean hasError = false;
+		String message = "" ;
+		List<Stock> stocks = null;
+		try{		
+			stocks = DAO.getPendingStocks();
+		}catch(SQLException e){
+			message = e.getMessage();
+			hasError = true;	
+		}
+		PrintWriter out = resp.getWriter();
+		if(hasError==true){
+			out.println(message);
+			return;
+		}
+		resp.setContentType("text/html");
+    	
+    	StringBuilder sb  = new StringBuilder();
+    	sb.append("[");
+    	boolean b = false;
+		for(Stock s : stocks){
+			sb.append(s.getJson());
+			sb.append(",");
+			b = true;
+		} 
+		if(b == true)
+			sb.deleteCharAt(sb.length()-1);
+		sb.append("]");
+		out.print(sb.toString());
+	}
+
+	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req,resp);
+	}
+}
+

@@ -257,10 +257,30 @@ public class DAO {
 		ResultSet rs = st.executeQuery("select * from pending_stock where id='" + stockName + "'");
 		con.close();
 		if(rs.next()){
-			return new Stock(rs.getString("name"),rs.getInt("ownerId"));
+			return new Stock(rs.getString("id"),rs.getInt("owner_id"));
 		}else{
-			return null;
+			Stock s = serachStock(stockName);
+			if(s == null){
+				return null;
+			}
+			return s;
 		}		
 	}
+
+	public static List<Stock> getPendingStocks() throws SQLException{
+		List<Stock> stocks = new LinkedList<Stock>();
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		ResultSet rs = st.executeQuery("select * from pending_stock");
+		while(rs.next()){			
+			String stockId = rs.getString("id");
+			int ownerId = rs.getInt("owner_id");
+			stocks.add(new Stock(stockId,ownerId));
+		}		
+		con.close();
+		return stocks;
+	}
+
+
 
 }
