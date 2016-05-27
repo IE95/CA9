@@ -116,7 +116,6 @@
           <form name="stock_name">
             <input type="text" class="form-control margin col-xs-4" ng-model="newPendingStock"/>
           </from>
-          <p>{{newPendingStock}}</p>
           <button ng-click="ctrl.addNewStock()" class="btn btn-success margin">Add Stock</button>
           <P>{{stockResponse}}</P>
         </div>
@@ -230,12 +229,14 @@
       <tr>
         <th>Name</th>
         <th>Owner Id</th>
+        <th>Confirm Button</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="stock in ctrl.pendingStocks">
         <td>{{stock.symbol}}</td>
         <td>{{stock.ownerId}}</td>
+        <th><button class="btn btn-success" ng-click="ctrl.confirmStock(stock.symbol,stock.ownerId)">Confirm</button>
       </tr>
     </tbody>
   </table>

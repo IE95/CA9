@@ -12,8 +12,8 @@ import java.util.LinkedList;
 import java.sql.*;
 
 
-@WebServlet("/addNewPendingStock")
-public class addNewPendingStock extends HttpServlet {
+@WebServlet("/confirmSymbol")
+public class ConfirmSymbol extends HttpServlet {
 	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		
 		
@@ -25,37 +25,23 @@ public class addNewPendingStock extends HttpServlet {
 		String message = "" ;
 		try{
 			name = req.getParameter("name");
-			int ownerId = Integer.parseInt(req.getUserPrincipal().getName());
-			if(name==null||name.equals("")){
-				throw new NumberFormatException();
+			int ownerId = Integer.parseInt(req.getParameter("ownerId"));
+			if(name==null){
+				throw new MyException("invalide symbol");
 			}
-			Stock s = DAO.findPendingStock(name);
-			
-			
-			if(s!=null){	
-				message = "Repeated Stock";			
-				hasError = true ;
-			}else{				
-				DAO.addPendingStock(new Stock(name,ownerId));
-				message = "New user is added" ;
-			}
-		}catch(NumberFormatException e){
-			message = "Mismatched parameters";
-			hasError = true;
-		}catch(SQLException e){
+			Stock s = new Stock(name,ownerId);
+			DAO.confirmSymbol(s);
+		}catch(NumberFormatException | SQLException | MyException e){
 			message = e.getMessage();
 			hasError = true;			
 		}
 		resp.setContentType("text/html");
     	PrintWriter out = resp.getWriter();
 		if(hasError){
-			req.setAttribute("hasError", 1);
 			out.println(message);
 		}
 		else{
-			req.setAttribute("hasError", 0);
 			out.println("successful");
 		}
 	}
 }
-

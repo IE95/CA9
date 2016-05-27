@@ -197,7 +197,7 @@ public class DAO {
 	public static void addStock(Stock stock) throws SQLException{
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();		
-		st.executeUpdate("insert into stock values('" + stock.getId() + "')" );
+		st.executeUpdate("insert into stock values('" + stock.getId() + "', "+stock.getOwnerId()+" )");
 		con.close();
 	}	
 
@@ -279,6 +279,14 @@ public class DAO {
 		}		
 		con.close();
 		return stocks;
+	}
+
+	public static void confirmSymbol(Stock s)throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		st.executeUpdate("delete from pending_stock where id='" + s.getId()+"'");	
+		addStock(s);
+		con.close();	
 	}
 
 

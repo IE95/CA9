@@ -119,7 +119,9 @@
             }).error(function(data, status) {
                 alert("error" +status);
             });   
-        }();
+        };
+
+        this.getPendingStocks();
        
 
         this.addNewStock = function(){
@@ -131,12 +133,27 @@
             $http.post('/boors/addNewPendingStock',data,boorsCtrl.config
                 ).success(function(response){
                     $scope.stockResponse = response;
+                    boorsCtrl.getPendingStocks();
                 }).error(function(error){
                     alert(error);   
             });
 
             $scope.newPendingStock = ""
-            boorsCtrl.getPendingStocks();
+           
+        }
+
+        this.confirmStock = function(symbol,ownerIdN){
+            var data = $.param({
+                name: symbol,
+                ownerId : ownerIdN
+            });
+            
+            $http.post('/boors/confirmSymbol',data,boorsCtrl.config
+                ).success(function(response){
+                    boorsCtrl.getPendingStocks();
+                }).error(function(error){
+                    alert(error);   
+            });
         }
 
         this.getStockList("all");
