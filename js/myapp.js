@@ -28,6 +28,7 @@
         $scope.loadUserProfileErrMsg = "" ;
         $scope.addRoleResMsg = "" ;
         $scope.getBackupResMsg = "" ;
+        $scope.signupResMsg = "" ;
 /////////////////////// fffff
 
 
@@ -251,6 +252,44 @@
                 $scope.loadUserProfileErrMsg = error;
             });            
         }
+
+        this.signup = function(){
+            if($scope.userId === undefined || $scope.name === undefined || $scope.family === undefined || 
+                $scope.email === undefined || $scope.password ===undefined || $scope.repeatPassword === undefined ||
+                $scope.userId === "" || $scope.name === "" || $scope.family === "" || 
+                $scope.email === "" || $scope.password ==="" || $scope.repeatPassword === ""){
+                    
+                $scope.signupResMsg = "fill all field" ;
+            }else if($scope.password !== $scope.repeatPassword){
+                $scope.signupResMsg = "password doesn't match" ;
+            }else{
+                var data = $.param({
+                id: $scope.userId,
+                name: $scope.name,
+                family: $scope.family,
+                password: $scope.password , 
+                email: $scope.email
+                 });
+                $http.post('/boors/addUser',data,boorsCtrl.config
+                    ).success(function(response){
+                        if(response.result === 1){
+                            $scope.signupResMsg = "user successfully added" ;
+                            $scope.userId = "";
+                            $scope.name = "";
+                            $scope.family = "";
+                            $scope.email = "";
+                            $scope.password = "";
+                            $scope.repeatPassword = "";
+                        }else{
+                            $scope.signupResMsg = response.message;
+                        }
+                    }).error(function(error){                
+                        $scope.signupResMsg = error ;
+                });            
+            }
+
+        }
+
 
         this.getUserInfo();
 //////////////////////////////ffffff

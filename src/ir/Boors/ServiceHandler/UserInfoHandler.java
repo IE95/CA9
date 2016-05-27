@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.LinkedList;
 import java.sql.*;
 
-
-
 @WebServlet("/userinfo")
 public class UserInfoHandler extends HttpServlet {
 	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
@@ -30,6 +28,7 @@ public class UserInfoHandler extends HttpServlet {
 			}else{
 				DAO.loadUserOrders(user);
 				myDAO.loadUserDepositRequests(user);
+				myDAO.loadUserRoles(user);
 			}
 		}catch(NumberFormatException e){
 			hasError = true;

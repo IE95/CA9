@@ -51,6 +51,17 @@ public class myDAO {
 		con.close();		
 	}	
 
+	public static void loadUserRoles(User user) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		ResultSet rs = st.executeQuery("select * from user_role where id=" + user.getId());
+		user.clearRoles();
+		while(rs.next()){
+			user.addRole(rs.getString("role"));
+		}
+		con.close();		
+	}		
+
 	public static DepositRequest findDepositRequestById(int requestId) throws SQLException{
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();				
@@ -100,5 +111,14 @@ public class myDAO {
 		st.executeQuery("insert into user_role values(" + userId + ",'" + role + "')");
 		con.close();
 	}
+//////////////////replace
+	public static void addUser(User user) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();		
+		st.executeUpdate("insert into user values(" + user.getId() + ",'" + user.getPassword() +"','" + user.getName() + "','" + user.getFamily() + "','"+user.getEmail()+"'," + user.getBalance() + ")" );
+		con.close();
+	}
+/////////////////////replace
+
 
 }

@@ -15,6 +15,7 @@ create table user (
     password varchar(100) not null,
     name varchar(100) not null,
     family varchar(100) not null,
+    email varchar(100) not null,
     balance integer not null,
     primary key (id)
 );
@@ -110,6 +111,6 @@ create table config (
     primary key (name)
 );
 
-insert into user values (1,'admin','admin','adminy',0);
+insert into user values (1,'admin','admin','adminy','damaroo.con',0);
 insert into user_role values (1,'admin');
 

@@ -16,16 +16,13 @@
       <div class="navbar-header">
         <a class="navbar-brand" href="#">Bourse System</a>
       </div>
-      <div class="col-xs-2">
+      <div class="right">
         <div class="input-group">
-          <input ng-model="loginId" type="text" class="form-control" placeholder="User Id">
-          <span class="input-group-btn">
-            <button ng-click="ctrl.login()" class="btn btn-default  btn-group" type="submit"><i class="glyphicon glyphicon-log-in"></i></button>
-          </span>
+          <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+          </button>
         </div> 
       </div>
-      <span class="error-msg">{{loginErrorMessage}}</span>
-
     </div>
   </nav>
   <div ng-show="ctrl.user.id !== null" class="jumbotron">

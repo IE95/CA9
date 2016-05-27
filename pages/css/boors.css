@@ -36,6 +36,10 @@ label{
 	float: left;
 }
 
+.error{
+	color: red;
+}
+
 .error-msg-inline{
 	color: red;
 	margin: 15px;
@@ -65,5 +69,14 @@ label{
 .margin{
 	margin : 10px;
 }
+
+.vcenter{
+	margin-top: 5%;
+}
+
+.right{
+	float: right;
+}
+
 
 
