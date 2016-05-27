@@ -294,6 +294,14 @@
   </div>
 
 
+  <p>Stock Statistics</p>
+  <div class="col-xs-4">
+    <div ng-repeat="stock in ctrl.userStocks">
+      <p>{{stock.stockName}}</p>
+      <p ng-repeat=" share in stock.shares">{{share.id}},{{(share.count/stock.total)*100}}%</p>
+    </div>
+  </div>
+
 
 
 
