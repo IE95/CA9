@@ -9,6 +9,7 @@ import java.util.List;
 public class Stock {
 	private String id ;
 	private int ownerId;
+	private int db_id;
 	private List<Order> sellOrders;
 	private List<Order> buyOrders;
 

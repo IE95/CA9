@@ -243,10 +243,10 @@ public class DAO {
 	}
 
 
-	public static void addPendingStock(Stock s)throws SQLException{
+	public static void addPendingStock(Order o)throws SQLException{
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();		
-		st.executeUpdate("insert into pending_stock values('"+ s.getId()+ "',"+s.getOwnerId()+")");
+		st.executeUpdate("insert into pending_stock values('"+ o.getStockId()+ "',"+o.getUser().getId()+","+o.getQuantity()+","+o.getPrice()+",'"+o.getOpType() +"')");
 		con.close();
 	}
 
@@ -267,18 +267,21 @@ public class DAO {
 		}		
 	}
 
-	public static List<Stock> getPendingStocks() throws SQLException{
-		List<Stock> stocks = new LinkedList<Stock>();
+	public static List<Order> getPendingStocks() throws SQLException{
+		List<Order> orders = new LinkedList<Order>();
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();				
 		ResultSet rs = st.executeQuery("select * from pending_stock");
 		while(rs.next()){			
 			String stockId = rs.getString("id");
 			int ownerId = rs.getInt("owner_id");
-			stocks.add(new Stock(stockId,ownerId));
+			int quantity = rs.getInt("quantity");
+			int price = rs.getInt("price");
+			String request_type = rs.getString("request_type");
+			orders.add(new Order(-1,stockId,new User(ownerId),quantity,price,"sell",request_type));
 		}		
 		con.close();
-		return stocks;
+		return orders;
 	}
 
 	public static void confirmSymbol(Stock s)throws SQLException{

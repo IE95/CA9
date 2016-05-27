@@ -25,7 +25,7 @@ public class Order implements Comparable<Order>{
 		this.orderType = orderType;
 		this.opType = opType;
 	}
-	
+
 	public int compareTo(Order o2){
 		return this.price - o2.price ;
 	}
@@ -98,7 +98,8 @@ public class Order implements Comparable<Order>{
 		json+= "\"userId\":" + user.getId() + "," ;
 		json+= "\"quan\":" + quantity + "," ;
 		json+= "\"price\":" + price + "," ;
-		json+= "\"type\":\"" + orderType + "\"" ;		
+		json+= "\"type\":\"" + orderType + "\"," ;
+		json+= "\"opType\":\"" + opType +"\"";		
 		json+= "}";
 		return json;
 	}

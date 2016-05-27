@@ -31,6 +31,10 @@ public class User {
 		this.sharesAmount = new HashMap<String, Integer>();
 		this.orders = new LinkedList<Order>();
 	}
+
+	public User(int id){
+		this.id = id;
+	}
 	
 	public void deposit(int amount){
 		balance+=amount ;

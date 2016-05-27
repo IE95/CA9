@@ -26,18 +26,20 @@ public class addNewPendingStock extends HttpServlet {
 		try{
 			name = req.getParameter("name");
 			int ownerId = Integer.parseInt(req.getUserPrincipal().getName());
+			int quantity = Integer.parseInt(req.getParameter("quantity"));
+			int price = Integer.parseInt(req.getParameter("price"));
+			String request_type = req.getParameter("type").toString();
+
 			if(name==null||name.equals("")){
 				throw new NumberFormatException();
-			}
+			}				
 			Stock s = DAO.findPendingStock(name);
-			
-			
-			if(s!=null){	
-				message = "Repeated Stock";			
-				hasError = true ;
-			}else{				
-				DAO.addPendingStock(new Stock(name,ownerId));
-				message = "New user is added" ;
+			if(s == null){
+				DAO.addPendingStock(new Order(-1,name,new User(ownerId),quantity,price,"sell",request_type));	
+			}
+			else{
+				message = "Error : stock was in the system";
+				hasError = true;
 			}
 		}catch(NumberFormatException e){
 			message = "Mismatched parameters";

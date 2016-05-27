@@ -127,7 +127,10 @@
         this.addNewStock = function(){
 
             var data = $.param({
-                name: $scope.newPendingStock
+                name: $scope.newPendingStock,
+                quantity: $scope.pendingQuantity,
+                price: $scope.pendingPrice,
+                type: $scope.pendingType
             });
             
             $http.post('/boors/addNewPendingStock',data,boorsCtrl.config
@@ -139,13 +142,21 @@
             });
 
             $scope.newPendingStock = ""
+            $scope.pendingQuantity = ""
+            $scope.pendingPrice = ""
+            $scope.pendingType = ""
+
            
         }
 
-        this.confirmStock = function(symbol,ownerIdN){
+        this.confirmStock = function(order){
             var data = $.param({
-                name: symbol,
-                ownerId : ownerIdN
+                name: order.symbol,
+                ownerId : order.userId,
+                quantity: order.quan,
+                price: order.price,
+                orderType: order.type,
+                opType: order.opType
             });
             
             $http.post('/boors/confirmSymbol',data,boorsCtrl.config

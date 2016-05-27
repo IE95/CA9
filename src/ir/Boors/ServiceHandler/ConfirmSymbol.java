@@ -20,17 +20,20 @@ public class ConfirmSymbol extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
-		String name;
 		boolean hasError = false;
 		String message = "" ;
 		try{
-			name = req.getParameter("name");
+			String name = req.getParameter("name");
 			int ownerId = Integer.parseInt(req.getParameter("ownerId"));
+			int price = Integer.parseInt(req.getParameter("price"));
+			int quantity = Integer.parseInt(req.getParameter("quantity"));
+			String type = req.getParameter("opType").toString();
 			if(name==null){
-				throw new MyException("invalide symbol");
+				throw new MyException("invalid symbol");
 			}
 			Stock s = new Stock(name,ownerId);
 			DAO.confirmSymbol(s);
+			DAO.addOrder(new Order(-1,name,new User(ownerId),quantity,price,"sell",type));
 		}catch(NumberFormatException | SQLException | MyException e){
 			message = e.getMessage();
 			hasError = true;			

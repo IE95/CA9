@@ -112,11 +112,18 @@
         </div>
         
 
-        <div>
+        <div class="col-xs-3">
           <form name="stock_name">
-            <input type="text" class="form-control margin col-xs-4" ng-model="newPendingStock"/>
+            <input type="text" class="form-control margin col-xs-4" ng-model="newPendingStock" placeholder="stock name"required/>
+            <input type="text" class="form-control margin col-xs-4" ng-model="pendingQuantity" placeholder="quantity" required/>
+            <input type="text" class="form-control margin col-xs-4" ng-model="pendingPrice" placeholder="price" required/>
+            <select name="method" name="method" class="margin form-control" id="method" placeholder="type" ng-model="pendingType" required>
+                <option value="GTC">GTC</option>
+                <option value="IOC">IOC</option>
+                <option value="MPO">MPO</option>
+            </select>
           </from>
-          <button ng-click="ctrl.addNewStock()" class="btn btn-success margin">Add Stock</button>
+          <button ng-click="stock_name.$valid && ctrl.addNewStock()" class="btn btn-success margin">Add Stock</button>
           <P>{{stockResponse}}</P>
         </div>
 
@@ -229,14 +236,22 @@
       <tr>
         <th>Name</th>
         <th>Owner Id</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>type</th>
+        <th>opType</th>
         <th>Confirm Button</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="stock in ctrl.pendingStocks">
         <td>{{stock.symbol}}</td>
-        <td>{{stock.ownerId}}</td>
-        <th><button class="btn btn-success" ng-click="ctrl.confirmStock(stock.symbol,stock.ownerId)">Confirm</button>
+        <td>{{stock.userId}}</td>
+        <td>{{stock.quan}}</td>
+        <td>{{stock.price}}</td>        
+        <td>{{stock.type}}</td>
+        <td>{{stock.opType}}</td>
+        <th><button class="btn btn-success" ng-click="ctrl.confirmStock(stock)">Confirm</button>
       </tr>
     </tbody>
   </table>

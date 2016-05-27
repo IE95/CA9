@@ -18,9 +18,9 @@ public class getPendingStock extends HttpServlet {
 		String name;
 		boolean hasError = false;
 		String message = "" ;
-		List<Stock> stocks = null;
+		List<Order> orders = null;
 		try{		
-			stocks = DAO.getPendingStocks();
+			orders = DAO.getPendingStocks();
 		}catch(SQLException e){
 			message = e.getMessage();
 			hasError = true;	
@@ -35,7 +35,7 @@ public class getPendingStock extends HttpServlet {
     	StringBuilder sb  = new StringBuilder();
     	sb.append("[");
     	boolean b = false;
-		for(Stock s : stocks){
+		for(Order s : orders){
 			sb.append(s.getJson());
 			sb.append(",");
 			b = true;
