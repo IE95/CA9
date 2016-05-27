@@ -364,8 +364,31 @@ public class DAO {
 		Statement st = con.createStatement();				
 		st.executeUpdate("delete from expensive_request where id=" + id);
 		con.close();
+	}
 
-		
+	public static List<String> getStocksOfUser(int id)throws SQLException{
+		List<String> strings = new LinkedList<String>();
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		ResultSet rs = st.executeQuery("select * from stock where owner_id="+id);
+		while(rs.next()){
+			String stockId = rs.getString("id");			
+			strings.add(stockId);
+		}
+		return strings;	
+	}
+
+	public static List<Share> getShares(String name)throws SQLException{
+		List<Share> shares = new LinkedList<Share>();
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		ResultSet rs = st.executeQuery("select * from share where stock_id='"+name+"'");
+		while(rs.next()){
+			int id = rs.getInt("user_id");
+			int count = rs.getInt("quantity");			
+			shares.add(new Share(id,count));
+		}
+		return shares;	
 	}
 
 

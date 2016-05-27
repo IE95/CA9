@@ -13,6 +13,7 @@
         this.pendingStocks = [];
         this.searchInput = ""
         this.expensiveRequests = [];
+        this.userStocks = [];
 
         $scope.reqErrorMessage = "" ;
         $scope.loginErrorMessage = "" ;
@@ -190,6 +191,15 @@
                 alert("error" +status);
             });   
         };
+
+        this.getUserStocks=function(){
+             $http.get('/boors/getMyStockStatistic')
+            .success(function(response) {
+                boorsCtrl.userStocks = response;
+            }).error(function(data, status) {
+                alert("error" +status);
+            });
+        }();
         
         this.confirmExpensive = function(order){
             var data = $.param({
