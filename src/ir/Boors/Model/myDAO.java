@@ -83,8 +83,22 @@ public class myDAO {
 		con.close();
 	}
 
+	public static boolean hasUserRole(int userId,String role) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		ResultSet rs =st.executeQuery("select * from user_role where id=" + userId + " and role='" + role + "'");
+		con.close();
+		if(rs.next())
+			return true;
+		else
+			return false;
+	}
 
-
-
+	public static void addUserRole(int userId,String role) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		st.executeQuery("insert into user_role values(" + userId + ",'" + role + "')");
+		con.close();
+	}
 
 }

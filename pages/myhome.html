@@ -149,7 +149,24 @@
                   <td>${{currReq.price}}</td> 
                 </tr>
               </table>
-            </div>
+            </div><br/>
+
+            <div class="container-fluid"><label class="col-xs-2">Roles</label>
+              <form class="form-inline">
+                <div class="form-group">
+                  <select class="form-control" ng-model="selectedRole">
+                      <option value="user">normal user</option>
+                      <option value="finance_user">finance responsible</option>
+                      <option value="company_owner">compony owner</option>
+                      <option value="admin">admin</option>
+                  </select>                    
+                </div>
+                <button ng-click="ctrl.addUserRole(selectedRole)" type="submit" class="btn btn-primary">Add Role</button>
+                <span class="help-inline error-msg-inline">{{addRoleResMsg}}</span>
+              </form>
+            </div><br/>
+
+
           </div>
         </div>
       </div>

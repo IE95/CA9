@@ -26,6 +26,7 @@
         $scope.depositRequestResMsg = "" ;
         $scope.loadDepositRequestsErrMsg = "" ;
         $scope.loadUserProfileErrMsg = "" ;
+        $scope.addRoleResMsg = "" ;
 /////////////////////// fffff
 
 
@@ -220,6 +221,26 @@
                 $scope.searchUserId = "";
 
             }); 
+        }
+
+        this.addUserRole = function(role){
+            var data = $.param({
+                userId: boorsCtrl.foundUserProfile.id,
+                role: role
+            });
+            
+            $http.post('/boors/addUserRole',data,boorsCtrl.config
+                ).success(function(response){
+                    if(response.result === 1){
+                        $scope.addRoleResMsg = "successfull";
+                    }else{
+                        $scope.addRoleResMsg = response.message;
+                    }
+                    $scope.selectedRole = null ;
+                }).error(function(error){                
+                    $scope.addRoleResMsg = error ;
+                    $scope.selectedRole = null ;
+            });            
         }
 
 
