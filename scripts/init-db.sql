@@ -36,9 +36,12 @@ create table stock (
 create table pending_stock (
     id varchar(20) not null,
     owner_id integer not null,
+    quantity integer not null,
+    price integer not null,
+    request_type varchar(4) not null,
     foreign key(owner_id) references user(id),
     primary key (id)
-); 
+);
 
 create table share (
     stock_id varchar(20) not null,
