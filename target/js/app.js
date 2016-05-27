@@ -17,6 +17,12 @@
         $scope.loadStocksErrorMessage = "" ;
         $scope.loadRecordsErrorMessage = "" ;
 
+         this.config = 
+        {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        }
 
 
         this.getUserInfo = function(){
@@ -88,6 +94,7 @@
             boorsCtrl.getStockList("all");
         }
 
+
         this.login = function(){
             $http.get('http://localhost:8080/boors/userinfo?id='+$scope.loginId).success(function(response) {
                 if(response.result === 1){
@@ -101,6 +108,25 @@
                     $scope.loginId = "";
                 }
             }); 
+        }
+
+
+       
+
+        this.addNewStock = function(){
+
+            var data = $.param({
+                name: $scope.newPendingStock
+            });
+            
+            $http.post('/boors/addNewPendingStock',data,boorsCtrl.config
+                ).success(function(response){
+                    $scope.stockResponse = response;
+                }).error(function(error){
+                    alert(error);   
+            });
+
+            $scope.newPendingStock = ""
         }
 
         this.getStockList("all");

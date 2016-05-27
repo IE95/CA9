@@ -243,11 +243,24 @@ public class DAO {
 	}
 
 
-	public static void addNewStock()throws SQLException{
+	public static void addPendingStock(Stock s)throws SQLException{
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();		
-		// st.executeUpdate("insert into pending_stock values(" + + ")" );
+		st.executeUpdate("insert into pending_stock values('"+ s.getId()+ "',"+s.getOwnerId()+")");
 		con.close();
+	}
+
+
+	public static Stock findPendingStock(String stockName)throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();	
+		ResultSet rs = st.executeQuery("select * from pending_stock where id='" + stockName + "'");
+		con.close();
+		if(rs.next()){
+			return new Stock(rs.getString("name"),rs.getInt("ownerId"));
+		}else{
+			return null;
+		}		
 	}
 
 }
