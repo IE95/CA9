@@ -36,7 +36,7 @@ public class CSVExporter extends HttpServlet {
 			req.setAttribute("message", "اشکال در ساخت فایل backup.csv");
 		}catch(SQLException e){
 			e.printStackTrace();
-			req.setAttribute("message", "اشکال در ارتباط با پایگاه داده");
+			req.setAttribute("message", "خطا در ارتباط با پایگاه داده");
 		}
 		req.getRequestDispatcher("exportResult.jsp").forward(req, resp);
 	}
