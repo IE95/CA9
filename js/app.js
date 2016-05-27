@@ -12,6 +12,7 @@
         this.records = [] ;
         this.pendingStocks = [];
         this.searchInput = ""
+        this.expensiveRequests = [];
 
         $scope.reqErrorMessage = "" ;
         $scope.loginErrorMessage = "" ;
@@ -75,9 +76,11 @@
                     if(boorsCtrl.user.id === 1)
                         boorsCtrl.getRecords();
                     $scope.latestTrans = response.messages;
-                    angular.element("#RequestTrade").modal("hide");
+                    angular.element("#RequestTrade").modal("hide")
+                    boorsCtrl.getExpensiveReq();
                 }
             }); 
+
 
         }
 
@@ -147,7 +150,7 @@
             $scope.pendingType = ""
 
            
-        }
+        };
 
         this.confirmStock = function(order){
             var data = $.param({
@@ -165,7 +168,7 @@
                 }).error(function(error){
                     alert(error);   
             });
-        }
+        };
 
         this.setLimitation = function(){
             var data = $.param({
@@ -177,7 +180,38 @@
                 }).error(function(error){
                     alert(error);   
             });
-        }
+        };
+
+        this.getExpensiveReq=function(){
+            $http.get('/boors/getExpensiveRequests')
+            .success(function(response) {
+                boorsCtrl.expensiveRequests = response;
+            }).error(function(data, status) {
+                alert("error" +status);
+            });   
+        };
+        
+        this.confirmExpensive = function(order){
+            var data = $.param({
+                id: order.id
+            });
+            $http.post('/boors/confirmExpensive',data,boorsCtrl.config
+                ).success(function(response){
+                    $scope.expensiveResponse = response
+                    boorsCtrl.getExpensiveReq()
+                }).error(function(error){
+                    alert(error);   
+            });
+
+            $http.get('http://localhost:8080/boors/dotrade?id='+order.userId+'&instrument='+order.symbol+'&price='+order.price+'&quantity='+order.quan+'&opType='+order.opType+'&tradeType='+order.type+'&notCheck='+'yes').success(function(response) {
+                
+            }); 
+
+            
+        };
+
+        this.getExpensiveReq();
+        this.getUserInfo();
 
         this.getStockList("all");
         stop = $interval(function() {boorsCtrl.getStockList("all");}, 15000);

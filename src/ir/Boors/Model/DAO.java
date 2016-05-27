@@ -11,6 +11,14 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+
+import java.io.*;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.LinkedList;
+import java.sql.*;
+
 public class DAO {
 	private static final String CONN_STR = "jdbc:hsqldb:hsql://localhost/bourse";
 	static {
@@ -322,7 +330,7 @@ public class DAO {
 	public static void addExpensiveOrder(Order order)throws SQLException{
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();				
-		st.executeUpdate("insert into request values ("+nextId("expensive_request") + ",'" 
+		st.executeUpdate("insert into expensive_request values ("+nextId("expensive_request") + ",'" 
 																	+ order.getStockId() + "',"
 																	+ order.getUser().getId() + ","
 																	+ order.getQuantity() + "," 
@@ -331,6 +339,36 @@ public class DAO {
 																	+ order.getOpType() + "')");
 		con.close();
 	}
+
+	public static List<Order> getExpensiveRequests() throws SQLException{
+		List<Order> orders = new LinkedList<Order>();
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		ResultSet rs = st.executeQuery("select * from expensive_request");
+		while(rs.next()){
+			int id = rs.getInt("id");			
+			String stockId = rs.getString("stock_id");
+			int ownerId = rs.getInt("user_id");
+			int quantity = rs.getInt("quantity");
+			int price = rs.getInt("price");
+			String request_type = rs.getString("request_type");
+			String op_type = rs.getString("op_type");
+			orders.add(new Order(id,stockId,new User(ownerId),quantity,price,request_type,op_type));
+		}		
+		con.close();
+		return orders;
+	}
+
+	public static void confirmExpensive(int id)throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		st.executeUpdate("delete from expensive_request where id=" + id);
+		con.close();
+
+		
+	}
+
+
 
 
 }

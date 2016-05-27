@@ -94,6 +94,7 @@ public class Order implements Comparable<Order>{
 	
 	public String getJson(){
 		String json = "{" ;
+		json+= "\"id\":"+id+",";
 		json+= "\"symbol\":\"" + stockId + "\"," ;
 		json+= "\"userId\":" + user.getId() + "," ;
 		json+= "\"quan\":" + quantity + "," ;

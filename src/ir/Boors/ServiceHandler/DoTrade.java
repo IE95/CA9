@@ -23,6 +23,7 @@ public class DoTrade extends HttpServlet {
 		boolean hasError = false;
 		resp.setContentType("text/html");
 		String command;
+		String notCheck;
 		try{
 			try{
 			command = req.getParameter("tradeType");
@@ -31,6 +32,8 @@ public class DoTrade extends HttpServlet {
 			price = Integer.parseInt(req.getParameter("price"));
 			quantity = Integer.parseInt(req.getParameter("quantity"));
 			type = req.getParameter("opType");
+			notCheck = req.getParameter("notCheck");
+
 			}catch(NumberFormatException e){
 				messages.add("Mismatched parameters");
 				throw new Exception() ;
@@ -77,10 +80,26 @@ public class DoTrade extends HttpServlet {
 				}							
 			}
 			try{
-				typeHandler = Class.forName("ir.Boors.ServiceHandler.OpTypeHandler." + type + "Handler");
 				Order order = new Order(-1,stock.getId(), user, quantity, price, command, type);
-				Method handler = typeHandler.getMethod("handle",Order.class,List.class,List.class);
-				messages.addAll((List<String>)handler.invoke(null,order,stock.getSellOrders(),stock.getBuyOrders()));
+				if(notCheck!= null && notCheck.equals("yes")){
+					typeHandler = Class.forName("ir.Boors.ServiceHandler.OpTypeHandler." + type + "Handler");
+					Method handler = typeHandler.getMethod("handle",Order.class,List.class,List.class);
+					messages.addAll((List<String>)handler.invoke(null,order,stock.getSellOrders(),stock.getBuyOrders()));
+				}
+				else{
+					int limit = DAO.getLimit();
+					if(limit!=-1 && order.getOrderValue() > limit){
+						DAO.addExpensiveOrder(order);
+						messages.add("request was expensive");
+					}
+					else{
+						typeHandler = Class.forName("ir.Boors.ServiceHandler.OpTypeHandler." + type + "Handler");
+						Method handler = typeHandler.getMethod("handle",Order.class,List.class,List.class);
+						messages.addAll((List<String>)handler.invoke(null,order,stock.getSellOrders(),stock.getBuyOrders()));
+					}
+				}
+				
+				
 			}catch(Exception ex){
 				messages.add("Invalid type");
 				ex.printStackTrace();
