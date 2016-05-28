@@ -106,7 +106,7 @@ create table deposit_req (
 
 
 create table config (
-    name varchar(20) not null,
+    name varchar(70) not null,
     value varchar(20) not null,
     primary key (name)
 );
