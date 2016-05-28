@@ -105,6 +105,9 @@
                     if(boorsCtrl.hasRole('admin') || boorsCtrl.hasRole('finance_user')){
                         boorsCtrl.getExpensiveReq();
                     }
+                    if(boorsCtrl.hasRole('admin') || boorsCtrl.hasRole('company_owner')){
+                        boorsCtrl.getUserStocks();
+                    }
                     boorsCtrl.setPermissions();
                 }
             }); 
@@ -252,7 +255,7 @@
             }).error(function(data, status) {
                 alert("error" +status);
             });
-        }();
+        };
         
         this.confirmExpensive = function(order){
             var data = $.param({
