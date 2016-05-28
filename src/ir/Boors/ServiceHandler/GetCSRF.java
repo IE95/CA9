@@ -18,7 +18,6 @@ public class GetCSRF extends HttpServlet {
 		
 		try{
 			int csrf = DAO.getCSRF(req.getSession().getId());
-			
 			resp.getWriter().println(csrf);
 		}
 		catch(SQLException e){
