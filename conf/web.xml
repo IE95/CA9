@@ -73,10 +73,6 @@
 		<url-pattern>/RecordsHandler</url-pattern>
 	</servlet-mapping>
 
-	<servlet-mapping>
-		<servlet-name>FrontController</servlet-name>
-		<url-pattern>/Logout</url-pattern>
-	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>FrontController</servlet-name>
@@ -122,6 +118,10 @@
 		<servlet-name>FrontController</servlet-name>
 		<url-pattern>/AddDepositRequest</url-pattern>
 	</servlet-mapping>
+
+
+
+
 	
 
 

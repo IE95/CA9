@@ -68,12 +68,14 @@ public class FrontController extends HttpServlet {
 			Class ctrlClass = Class.forName("ir.Boors.ServiceHandler." + className);
 			Method m = ctrlClass.getMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
 			m.invoke(ctrlClass.newInstance(), request, response);
+		}catch(InvocationTargetException e){
+			response.getWriter().println(e.getCause().toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 
 			response.setContentType("text/html");
 			response.setStatus(400);
-			response.getWriter().println("CSRF ATTACK");
+			response.getWriter().println(e.toString());
 		}
 	}
 
@@ -109,11 +111,15 @@ public class FrontController extends HttpServlet {
 			Class ctrlClass = Class.forName("ir.Boors.ServiceHandler." + className);
 			Method m = ctrlClass.getMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
 			m.invoke(ctrlClass.newInstance(), request, response);
+		}catch(InvocationTargetException e){
+			response.getWriter().println(e.getCause().toString());
+
+
 		} catch (Exception e) {
 	
 			response.setContentType("text/html");
 			response.setStatus(400);
-			response.getWriter().println("CSRF ATTACK");
+			response.getWriter().println(e.toString());
 		}
 	}
 

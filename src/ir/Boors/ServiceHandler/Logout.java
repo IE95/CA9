@@ -12,9 +12,18 @@ import java.util.List;
 import java.util.LinkedList;
 import java.sql.*;
 
+
+@WebServlet("/Logout")
 public class Logout extends HttpServlet {
 	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
-		req.getSession(true).invalidate();	
+			
+		try{
+			DAO.delCSRF(req.getSession().getId());
+		}
+		catch(SQLException e){
+
+		}
+		req.getSession(true).invalidate();
 		resp.sendRedirect("home.html");
 	}
 
