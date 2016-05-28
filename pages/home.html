@@ -11,38 +11,36 @@
   <script type="text/javascript" src="js/bootstrap.min.js"></script> 
 </head>
 
-<body ng-app="boors" ng-controller="BoorsController as ctrl" >
 
+
+<body ng-app="boors" ng-controller="BoorsController as ctrl" >
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand" href="#">Bourse System</a>
       </div>
-      <div class="col-xs-2">
+      <div class="right">
         <div class="input-group">
-          <input ng-model="loginId" type="text" class="form-control" placeholder="User Id">
-          <span class="input-group-btn">
-            <button ng-click="ctrl.login()" class="btn btn-default  btn-group" type="submit"><i class="glyphicon glyphicon-log-in"></i></button>
-          </span>
+          <a href="logout" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+          </a>
         </div> 
       </div>
-      <span class="error-msg">{{loginErrorMessage}}</span>
-
     </div>
   </nav>
 
 
 
 
-  <div ng-show="ctrl.user.id !== null" class="jumbotron">
+  <div ng-show="ctrl.seeProfilePermission" class="jumbotron">
     <div class="container">
       <h1 >User Info</h1>
       <div class="container">
         <div class="container-fluid"><label class="col-xs-2">Id</label>{{ctrl.user.id}}</div><br/>
         <div class="container-fluid"><label class="col-xs-2">Name</label> {{ctrl.user.name}} </div><br/>
         <div class="container-fluid"><label class="col-xs-2">Family</label> {{ctrl.user.family}} </div><br/>
-        <div class="container-fluid"><label class="col-xs-2">Balance</label> {{ctrl.user.balance}} </div><br/>
-        <div class="container-fluid"><label class="col-xs-2">Shares</label>
+        <div ng-show="ctrl.seeTradeInfoPermission" class="container-fluid"><label class="col-xs-2">Balance</label> {{ctrl.user.balance}} </div><br/>
+        <div ng-show="ctrl.seeTradeInfoPermission" class="container-fluid"><label class="col-xs-2">Shares</label>
           <table class="col-xs-2">
             <tr ng-repeat="currShare in ctrl.user.shares">
               <td>{{currShare.name}}</td>
@@ -50,7 +48,27 @@
             </tr>
           </table>
         </div><br/>
-        <div class="container-fluid"><label class="col-xs-2">Requests</label>
+        
+        <div ng-show="ctrl.depositRequestPermission" class="container-fluid"><label class="col-xs-2">Deposit Reqs</label>
+          <table class="col-xs-2">
+            <tr ng-repeat="currReq in ctrl.user.depositRequests">
+              <td>request</td>
+              <td>${{currReq.amount}}</td> 
+            </tr>
+          </table>
+        </div><br/>
+
+        <div ng-show="ctrl.depositRequestPermission"  class="container-fluid">
+          <form class="form-inline col-xs-offset-2">
+            <div class="form-group">
+              <input ng-model="depositAmount" type="text" class="form-control" placeholder="Deposit Amount">
+            </div>
+            <button ng-click="ctrl.depositRequest()" type="submit" class="btn btn-primary">Register</button>
+            <span class="help-inline error-msg-inline">{{depositRequestResMsg}}</span>
+          </form>
+        </div><br/>
+
+        <div ng-show="ctrl.seeTradeInfoPermission" class="container-fluid"><label class="col-xs-2">Requests</label>
           <table class="col-xs-3">
             <tr ng-repeat="currReq in ctrl.user.reqs">
               <td><b>{{currReq.type}}</b></td>
@@ -66,7 +84,31 @@
   </div>
 
 
-  <div class="jumbotron">
+  <div ng-show="ctrl.confirmDepositRequestPermission" class="jumbotron">
+      <div class="container">
+        <h1 >Confirm Deposit Request</h1>
+        <div class="container">
+          <div class="container-fluid col-xs-10">
+            <table class="table table-hover">
+              <tr ng-repeat="currRequest in ctrl.depositRequests">
+                <td>&bull;</td>
+                <td>userId <b>{{currRequest.userId}}</b></td> 
+                <td>requset deposit</td>
+                <td>${{currRequest.amount}}</td>
+                <td>
+                  <button ng-click="ctrl.responseDepositRequest(currRequest.id,'accept')" class="btn btn-primary">accept</button>
+                  <button ng-click="ctrl.responseDepositRequest(currRequest.id,'reject')" class="btn btn-danger">reject</button>
+                </td>  
+              </tr>
+            </table>
+          </div> 
+          <div ng-show=" loadDepositRequestsErrMsg.length !==0 " class="container-fluid"><span class="error-msg">{{loadDepositRequestsErrMsg}}</span>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div ng-show="ctrl.seeMarketStatusPermission"class="jumbotron">
     <div class="container">
       <h1>Market Status</h1>
       <div class="container">
@@ -108,11 +150,11 @@
       <h1>Stock List</h1>
       <div class="container">
         <div class="list-group">
-          <a ng-click="ctrl.selectStock(currStock.symbol)" data-toggle="modal" data-target="#RequestTrade" data-backdrop="static" ng-repeat="currStock in ctrl.stocks | orderBy:'symbol'" class="list-group-item">{{currStock.symbol}}</a>   
+          <a ng-click="ctrl.tradePermission && ctrl.selectStock(currStock.symbol)" data-toggle="modal" data-target="#RequestTrade" data-backdrop="static" ng-repeat="currStock in ctrl.stocks | orderBy:'symbol'" class="list-group-item">{{currStock.symbol}}</a>   
         </div>
         
 
-        <div class="col-xs-3">
+        <div ng-show="ctrl.addStockPermission" class="col-xs-3">
           <form name="stock_name">
             <input type="text" class="form-control margin col-xs-4" ng-model="newPendingStock" placeholder="stock name"required/>
             <input type="text" class="form-control margin col-xs-4" ng-model="pendingQuantity" placeholder="quantity" required/>
@@ -123,7 +165,7 @@
                 <option value="MPO">MPO</option>
             </select>
           </from>
-          <button ng-click="stock_name.$valid && ctrl.addNewStock()" class="btn btn-success margin">Add Stock</button>
+          <button ng-disable="!ctrl.addStockPermission" ng-click="stock_name.$valid && ctrl.addNewStock()" class="btn btn-success margin">Add Stock</button>
           <P>{{stockResponse}}</P>
         </div>
 
@@ -184,8 +226,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button ng-disabled="ctrl.user.id===null" class="btn btn-primary" type="submit" ng-click="ctrl.doTrade('buy')">Buy</button>
-        <button class="btn btn-primary" type="submit" ng-click="ctrl.doTrade('sell')">Sell</button>
+        <button ng-disabled="!ctrl.tradePermission" class="btn btn-primary" type="submit" ng-click="ctrl.doTrade('buy')">Buy</button>
+        <button ng-disabled="!ctrl.tradePermission" class="btn btn-primary" type="submit" ng-click="ctrl.doTrade('sell')">Sell</button>
         <div class="error-msg">{{reqErrorMessage}}</div>
       </div>
       </div>
@@ -193,7 +235,7 @@
   </div>
 
 
-  <div ng-show="ctrl.user.id === 1" class="jumbotron">
+  <div ng-show="ctrl.seeRecordsPermission" class="jumbotron">
     <div class="container">
       <h1>Records</h1>
       <div class="container">        
@@ -224,12 +266,89 @@
             </tr>
           </table>
         </div> 
+        
+        <div class="container-fluid">
+          <button ng-disabled="!ctrl.seeRecordsPermission" ng-click="ctrl.getBackup()" class="btn btn-primary">Backup</button>
+          <span class="help-inline error-msg-inline">{{getBackupResMsg}}</span>
+        </div>
+
         <div ng-show=" loadRecordsErrorMessage.length !==0 " class="container-fluid"><span class="error-msg">{{loadRecordsErrorMessage}}</span>
         </div>        
       </div>
     </div>
   </div>
 
+
+  <div ng-show="ctrl.seeUsersProfilePermission" class="jumbotron">
+      <div class="container">
+        <h1 >Users Profile</h1>
+        <div class="container">
+          <div class="container-fluid">
+            <form class="form-inline">
+              <div class="form-group">
+                <input ng-model="searchUserId" type="text" class="form-control" placeholder="User id">
+              </div>
+              <button ng-disabled="!ctrl.seeUsersProfilePermission" ng-click="ctrl.getUserProfile(searchUserId)" type="submit" class="btn btn-primary">Search</button>
+              <span class="help-inline error-msg-inline">{{loadUserProfileErrMsg}}</span>
+            </form>
+          </div><br/><br/>
+          <div ng-show="ctrl.foundUserProfile !==null">
+            <div class="container-fluid"><label class="col-xs-2">Id</label>{{ctrl.foundUserProfile.id}}</div><br/>
+            <div class="container-fluid"><label class="col-xs-2">Name</label> {{ctrl.foundUserProfile.name}} </div><br/>
+            <div class="container-fluid"><label class="col-xs-2">Family</label> {{ctrl.foundUserProfile.family}} </div><br/>
+            <div class="container-fluid"><label class="col-xs-2">Balance</label> {{ctrl.foundUserProfile.balance}} </div><br/>
+            <div class="container-fluid"><label class="col-xs-2">Shares</label>
+              <table class="col-xs-2">
+                <tr ng-repeat="currShare in ctrl.foundUserProfile.shares">
+                  <td>{{currShare.name}}</td>
+                  <td> {{currShare.quan}}</td>
+                </tr>
+              </table>
+            </div><br/>
+
+            <div class="container-fluid"><label class="col-xs-2">Deposit Reqs</label>
+              <table class="col-xs-2">
+                <tr ng-repeat="currReq in ctrl.foundUserProfile.depositRequests">
+                  <td>request</td>
+                  <td>${{currReq.amount}}</td> 
+                </tr>
+              </table>
+            </div><br/>
+
+            <div class="container-fluid"><label class="col-xs-2">Requests</label>
+              <table class="col-xs-3">
+                <tr ng-repeat="currReq in ctrl.foundUserProfile.reqs">
+                  <td><b>{{currReq.type}}</b></td>
+                  <td>{{currReq.quan}}</td>
+                  <td>shares of</td>
+                  <td>{{currReq.symbol}}</td>
+                  <td>${{currReq.price}}</td> 
+                </tr>
+              </table>
+            </div><br/>
+
+            <div class="container-fluid"><label class="col-xs-2">Roles</label>
+              <form class="form-inline">
+                <div class="form-group">
+                  <select class="form-control" ng-model="selectedRole">
+                      <option value="user">normal user</option>
+                      <option value="finance_user">finance responsible</option>
+                      <option value="company_owner">compony owner</option>
+                      <option value="admin">admin</option>
+                  </select>                    
+                </div>
+                <button ng-click="ctrl.addUserRole(selectedRole)" type="submit" class="btn btn-primary">Add Role</button>
+                <span class="help-inline error-msg-inline">{{addRoleResMsg}}</span>
+              </form>
+            </div><br/>
+
+
+          </div>
+        </div>
+      </div>
+  </div>
+
+<div ng-show="ctrl.confirmPendingStockPermission">
   <label class="margin">pending requests table</label>
   <table class="table">
     <thead>
@@ -251,11 +370,13 @@
         <td>{{stock.price}}</td>        
         <td>{{stock.type}}</td>
         <td>{{stock.opType}}</td>
-        <th><button class="btn btn-success" ng-click="ctrl.confirmStock(stock)">Confirm</button>
+        <th><button  ng-disabled ="!ctrl.confirmPendingStockPermission" class="btn btn-success" ng-click="ctrl.confirmStock(stock)">Confirm</button>
       </tr>
     </tbody>
   </table>
+</div>
 
+<div ng-show="ctrl.confirmExpensiveTradePermission">
   {{expensiveResponse}}
   <label class="margin">expensive requests table</label>
   <table class="table">
@@ -278,22 +399,22 @@
         <td>{{o.price}}</td>        
         <td>{{o.type}}</td>
         <td>{{o.opType}}</td>
-        <th><button class="btn btn-success" ng-click="ctrl.confirmExpensive(o)">Confirm</button>
+        <th><button ng-disabled="!ctrl.confirmExpensiveTradePermission" class="btn btn-success" ng-click="ctrl.confirmExpensive(o)">Confirm</button>
       </tr>
     </tbody>
   </table>
+</div>
 
-
-  <div class="col-xs-4">
+  <div ng-show="setTradeLimitPermission" class="col-xs-4">
     <p class="margin"> transaction Limitation </p>
     <form name="limitation">
       <input type="text" class="form-control margin" ng-model="transactionLimitation" placeholder="transaction limitation" required/>
     </form>
     <p>{{limitResponse}}</p>
-    <button  class="margin btn btn-success" ng-click="limitation.$valid && ctrl.setLimitation()">set Limitation</button>
+    <button ng-disabled="!ctrl.setTradeLimitPermission" class="margin btn btn-success" ng-click="limitation.$valid && ctrl.setLimitation()">set Limitation</button>
   </div>
 
-
+<div ng-show="ctrl.setStockStatsPermission">
   <p>Stock Statistics</p>
   <div class="col-xs-4">
     <div ng-repeat="stock in ctrl.userStocks">
@@ -301,12 +422,7 @@
       <p ng-repeat=" share in stock.shares">{{share.id}},{{(share.count/stock.total)*100}}%</p>
     </div>
   </div>
-
-
-
-
- 
-
+</div>
 
 
   <script type="text/javascript" src="js/angular.min.js"></script> 

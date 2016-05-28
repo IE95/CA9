@@ -15,12 +15,73 @@
 		<web-resource-collection>
 			<web-resource-name>Home</web-resource-name>
 			<url-pattern>/home.html</url-pattern>
-			<url-pattern>/myhome.html</url-pattern>
+			<url-pattern>/stockQueue</url-pattern>
+			<url-pattern>/tradeQueue</url-pattern>
+			<url-pattern>/userinfo</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>user</role-name>
+			<role-name>finance_user</role-name>
+			<role-name>company_owner</role-name>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Home</web-resource-name>
+			<url-pattern>/addDepositRequest</url-pattern>
+			<url-pattern>/dotrade</url-pattern>	
+			<url-pattern>/trade</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>user</role-name>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Home</web-resource-name>
+			<url-pattern>/addNewPendingStock</url-pattern>
+			<url-pattern>/getMyStockStatistic</url-pattern>			
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>company_owner</role-name>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Home</web-resource-name>
+			<url-pattern>/addUserRole</url-pattern>
+			<url-pattern>/confirmSymbol</url-pattern>
+			<url-pattern>/export</url-pattern>
+			<url-pattern>/getPendingStock</url-pattern>
+			<url-pattern>/getUserProfile</url-pattern>
+			<url-pattern>/setLimit</url-pattern>						
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>
 		</auth-constraint>
 	</security-constraint>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Home</web-resource-name>
+			<url-pattern>/confirmExpensive</url-pattern>
+			<url-pattern>/getDepositRequests</url-pattern>
+			<url-pattern>/getExpensiveRequests</url-pattern>
+			<url-pattern>/responseDepositRequest</url-pattern>			
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>finance_user</role-name>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>						
 
 	<login-config>
 		<auth-method>FORM</auth-method>
