@@ -11,7 +11,7 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-
+import java.math.*;
 import java.io.*;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
@@ -472,6 +472,30 @@ public class DAO {
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();				
 		st.executeQuery("insert into user_role values(" + userId + ",'" + role + "')");
+		con.close();
+	}
+
+
+	public static int getCSRF(String sessionId) throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery("select * from config where name='"+sessionId +"'");
+		if(rs.next()){
+			int csrf = rs.getInt("value");	
+			return csrf;
+		}
+		else{
+			int csrf = Math.floor(100000 + Math.random() * 900000);
+			st.executeUpdate("insert into config values ('"+sessionId+"',"+csrf+")");
+			return csrf;
+		}
+		con.close();
+	}
+
+	public static void delCSRF(String sessionId)throws SQLException{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();				
+		st.executeQuery("delete from config where name='" + sessionId+"'");
 		con.close();
 	}
 
