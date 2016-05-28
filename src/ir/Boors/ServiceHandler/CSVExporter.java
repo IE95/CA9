@@ -15,10 +15,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 
-@WebServlet("/export")
+
 public class CSVExporter extends HttpServlet {
 
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		String json = "{\"result\":" ;
 		String message = "" ;
 		boolean hasError = false;
@@ -55,7 +55,7 @@ public class CSVExporter extends HttpServlet {
         out.println(json);		
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
 }

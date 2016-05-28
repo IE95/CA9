@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.LinkedList;
 import java.sql.*;
 
-@WebServlet("/getDepositRequests")
+
 public class GetDepositRequests extends HttpServlet {
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		String json = "{\"result\":1,\"depositRequests\":[" ;
 		try{
 			for (DepositRequest dr : DAO.getDepositRequests()) {
@@ -33,7 +33,7 @@ public class GetDepositRequests extends HttpServlet {
         out.println(json);
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
 		

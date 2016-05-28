@@ -11,11 +11,122 @@
 <!--        <url-pattern>/</url-pattern>-->
 <!--    </servlet-mapping>-->
 
+	<servlet>
+		<servlet-name>FrontController</servlet-name>
+		<servlet-class>ir.Boors.ServiceHandler.FrontController</servlet-class>
+	</servlet>
+
+
 
 	<servlet-mapping>
 		<servlet-name>FrontController</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/addNewPendingStock</url-pattern>
 	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/getPendingStock</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/UserInfoHandler</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/UserAdder</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/tradeQueue</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/trade</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/StockStatistic</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/StockQueueHandler</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/SetLimit</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/ResponseDepositRequest</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/RecordsHandler</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/Logout</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/GetUserProfile</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/GetExpensive</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/GetDepositRequests</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/DoTrade</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/ConfirmSymbol</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/ConfirmExpensive</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/CSVExporter</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/AddUserRole</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/AddDepositRequest</url-pattern>
+	</servlet-mapping>
+	
+
+
+
+
 
 	<security-constraint>
 		<web-resource-collection>

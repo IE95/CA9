@@ -12,14 +12,14 @@ import java.util.LinkedList;
 import java.sql.*;
 
 
-@WebServlet("/confirmSymbol")
+
 public class ConfirmSymbol extends HttpServlet {
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		
 		
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		boolean hasError = false;
 		String message = "" ;
 		try{

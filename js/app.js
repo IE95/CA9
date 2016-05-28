@@ -30,7 +30,7 @@
         this.confirmExpensiveTradePermission = false;
         this.setTradeLimitPermission = false;
         this.setStockStatsPermission = false;
-
+        this.csrfToken = null;
 
         $scope.reqErrorMessage = "" ;
         $scope.loginErrorMessage = "" ;
@@ -90,7 +90,7 @@
         }
 
         this.getUserInfo = function(){
-            $http.get('/boors/userinfo').success(function(response) {
+            $http.get('/boors/UserInfoHandler?csrf='+boorsCtrl.csrfToken).success(function(response) {
                 if(response.result === 1){
                     boorsCtrl.user = response.userInfo;
                     if(boorsCtrl.hasRole('admin')){
@@ -114,7 +114,7 @@
         };
 
         this.getStockList = function(stockId){
-            $http.get('/boors/stockQueue?instrument='+stockId).success(function(response) {
+            $http.get('/boors/StockQueueHandler?instrument='+stockId+"&csrf="+boorsCtrl.csrfToken).success(function(response) {
                 if(response.result === 1){
                     boorsCtrl.stocks = response.stocks;
                 }else{
@@ -124,7 +124,7 @@
         };
 
         this.getRecords = function(){
-            $http.get('/boors/records').success(function(response) {                
+            $http.get('/boors/RecordsHandler?csrf='+boorsCtrl.csrfToken).success(function(response) {                
                 if(response.result === 1){
                     boorsCtrl.records = response.records;
                 }else{
@@ -138,7 +138,7 @@
         };
 
         this.doTrade = function(type){
-            $http.get('/boors/dotrade?id='+boorsCtrl.user.id+'&instrument='+boorsCtrl.selectedStock+'&price='+$scope.price+'&quantity='+$scope.quantity+'&opType='+$scope.method+'&tradeType='+type).success(function(response) {
+            $http.get('/boors/DoTrade?id='+boorsCtrl.user.id+'&instrument='+boorsCtrl.selectedStock+'&price='+$scope.price+'&quantity='+$scope.quantity+'&opType='+$scope.method+'&tradeType='+type+"&csrf="+boorsCtrl.csrfToken).success(function(response) {
                 if(response.result === 0){
                     $scope.reqErrorMessage = response.messages[0];
                 }
@@ -172,7 +172,7 @@
         }
 
         this.getPendingStocks = function(){
-            $http.get('/boors/getPendingStock')
+            $http.get('/boors/getPendingStock?csrf='+boorsCtrl.csrfToken)
             .success(function(stocksData) {
                 boorsCtrl.pendingStocks = stocksData;
             }).error(function(data, status) {
@@ -186,7 +186,9 @@
                 name: $scope.newPendingStock,
                 quantity: $scope.pendingQuantity,
                 price: $scope.pendingPrice,
-                type: $scope.pendingType
+                type: $scope.pendingType,
+                csrf : boorsCtrl.csrfToken
+
             });
             
             $http.post('/boors/addNewPendingStock',data,boorsCtrl.config
@@ -214,10 +216,11 @@
                 quantity: order.quan,
                 price: order.price,
                 orderType: order.type,
-                opType: order.opType
+                opType: order.opType,
+                csrf : boorsCtrl.csrfToken
             });
             
-            $http.post('/boors/confirmSymbol',data,boorsCtrl.config
+            $http.post('/boors/ConfirmSymbol',data,boorsCtrl.config
                 ).success(function(response){
                     if(boorsCtrl.hasRole('admin')){
                         boorsCtrl.getPendingStocks();
@@ -229,9 +232,10 @@
 
         this.setLimitation = function(){
             var data = $.param({
-                limit: $scope.transactionLimitation
+                limit: $scope.transactionLimitation,
+                csrf : boorsCtrl.csrfToken
             });
-            $http.post('/boors/setLimit',data,boorsCtrl.config
+            $http.post('/boors/SetLimit',data,boorsCtrl.config
                 ).success(function(response){
                     $scope.limitResponse = response;
                 }).error(function(error){
@@ -240,7 +244,7 @@
         };
 
         this.getExpensiveReq=function(){
-            $http.get('/boors/getExpensiveRequests')
+            $http.get('/boors/GetExpensive?csrf='+boorsCtrl.csrfToken)
             .success(function(response) {
                 boorsCtrl.expensiveRequests = response;
             }).error(function(data, status) {
@@ -249,7 +253,7 @@
         };
 
         this.getUserStocks=function(){
-             $http.get('/boors/getMyStockStatistic')
+             $http.get('/boors/StockStatistic?csrf='+boorsCtrl.csrfToken)
             .success(function(response) {
                 boorsCtrl.userStocks = response;
             }).error(function(data, status) {
@@ -259,9 +263,10 @@
         
         this.confirmExpensive = function(order){
             var data = $.param({
-                id: order.id
+                id: order.id,
+                csrf : boorsCtrl.csrfToken
             });
-            $http.post('/boors/confirmExpensive',data,boorsCtrl.config
+            $http.post('/boors/ConfirmExpensive',data,boorsCtrl.config
                 ).success(function(response){
                     $scope.expensiveResponse = response
                     if(boorsCtrl.hasRole('admin') || boorsCtrl.hasRole('finance_user')){
@@ -271,7 +276,7 @@
                     alert(error);   
             });
 
-            $http.get('/boors/dotrade?id='+order.userId+'&instrument='+order.symbol+'&price='+order.price+'&quantity='+order.quan+'&opType='+order.opType+'&tradeType='+order.type+'&notCheck='+'yes').success(function(response) {
+            $http.get('/boors/DoTrade?id='+order.userId+'&instrument='+order.symbol+'&price='+order.price+'&quantity='+order.quan+'&opType='+order.opType+'&tradeType='+order.type+'&notCheck='+'yes'+"&csrf="+boorsCtrl.csrfToken).success(function(response) {
                 
             }); 
 
@@ -280,10 +285,11 @@
 
         this.depositRequest = function(){
             var data = $.param({
-                amount: $scope.depositAmount
+                amount: $scope.depositAmount,
+                csrf : boorsCtrl.csrfToken
             });
             
-            $http.post('/boors/addDepositRequest',data,boorsCtrl.config
+            $http.post('/boors/AddDepositRequest',data,boorsCtrl.config
                 ).success(function(response){
                     if(response.result === 1){
                         boorsCtrl.getUserInfo();
@@ -304,10 +310,11 @@
         this.responseDepositRequest = function(requestId,response){
             var data = $.param({
                 requestId: requestId,
-                command: response
+                command: response,
+                csrf : boorsCtrl.csrfToken
             });
             
-            $http.post('/boors/responseDepositRequest',data,boorsCtrl.config
+            $http.post('/boors/ResponseDepositRequest',data,boorsCtrl.config
                 ).success(function(response){
                     if(response.result === 1){
                         boorsCtrl.getUserInfo();
@@ -320,7 +327,7 @@
         }
 
         this.getDepositRequests = function(){
-            $http.get('/boors/getDepositRequests').success(function(response) {                
+            $http.get('/boors/GetDepositRequests?csrf='+boorsCtrl.csrfToken).success(function(response) {                
                 if(response.result === 1){
                     boorsCtrl.depositRequests = response.depositRequests;
                     $scope.loadDepositRequestsErrMsg = "" ;
@@ -333,7 +340,7 @@
         }
 
         this.getUserProfile = function(userId){            
-            $http.get('/boors/getUserProfile?userId=' + userId).success(function(response) {
+            $http.get('/boors/GetUserProfile?userId=' + userId+"&csrf="+boorsCtrl.csrfToken).success(function(response) {
                 if(response.result === 1){
                     boorsCtrl.foundUserProfile = response.userProfile;
                     $scope.loadUserProfileErrMsg = "" ;
@@ -351,10 +358,11 @@
         this.addUserRole = function(role){
             var data = $.param({
                 userId: boorsCtrl.foundUserProfile.id,
-                role: role
+                role: role,
+                csrf : boorsCtrl.csrfToken
             });
             
-            $http.post('/boors/addUserRole',data,boorsCtrl.config
+            $http.post('/boors/AddUserRole',data,boorsCtrl.config
                 ).success(function(response){
                     if(response.result === 1){
                         $scope.addRoleResMsg = "successfull";
@@ -369,12 +377,22 @@
         }
 
         this.getBackup = function(){
-            $http.get('/boors/export').success(function(response) {
+            $http.get('/boors/CSVExporter?csrf='+boorsCtrl.csrfToken).success(function(response) {
                 $scope.getBackupResMsg = response.message;
             }).error(function(error){
                 $scope.loadUserProfileErrMsg = error;
             });            
         }
+
+
+        this.getCSRF=function(){
+            $http.get('/boors/getCSRF').success(function(response) {
+                boorsCtrl.csrfToken = response;
+            }).error(function(error){
+                
+            });   
+        };
+        this.getCSRF();
 
         this.signup = function(){
             if($scope.userId === undefined || $scope.name === undefined || $scope.family === undefined || 
@@ -391,9 +409,10 @@
                 name: $scope.name,
                 family: $scope.family,
                 password: $scope.password , 
-                email: $scope.email
+                email: $scope.email,
+                csrf: boorsCtrl.csrfToken
                  });
-                $http.post('/boors/addUser',data,boorsCtrl.config
+                $http.post('/boors/UserAdder',data,boorsCtrl.config
                     ).success(function(response){
                         if(response.result === 1){
                             $scope.signupResMsg = "user successfully added" ;
@@ -414,9 +433,10 @@
         }
 
         
+        $timeout(function(){boorsCtrl.getUserInfo()}, 3000);
+        $timeout(function(){boorsCtrl.getStockList("all")}, 3000);
+ 
         
-        this.getUserInfo();
-        this.getStockList("all");
         stop = $interval(function() {boorsCtrl.getStockList("all");}, 15000);
 
     }]);

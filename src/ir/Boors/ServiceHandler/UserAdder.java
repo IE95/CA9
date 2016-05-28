@@ -12,9 +12,9 @@ import java.util.LinkedList;
 import java.sql.*;
 
 
-@WebServlet("/addUser")
+
 public class UserAdder extends HttpServlet {
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		int id ;
 		boolean hasError = false;
 		String message = "" ;
@@ -56,7 +56,7 @@ public class UserAdder extends HttpServlet {
         out.println(json);
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
 }

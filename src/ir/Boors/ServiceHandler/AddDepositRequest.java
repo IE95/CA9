@@ -15,10 +15,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 
-@WebServlet("/addDepositRequest")
+
 public class AddDepositRequest extends HttpServlet {
 
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		int amount = 0 ,userId=0;
 		String message ="";
 		String json = "{\"result\":" ;
@@ -55,7 +55,7 @@ public class AddDepositRequest extends HttpServlet {
         out.println(json);
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
 }

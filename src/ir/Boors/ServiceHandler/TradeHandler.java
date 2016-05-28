@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.LinkedList;
 import java.sql.*;
 
-@WebServlet("/trade")
+
 public class TradeHandler extends HttpServlet {
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		int id,price,quantity;
 		String instrument,type;
 		Class typeHandler ;
@@ -105,7 +105,7 @@ public class TradeHandler extends HttpServlet {
 		return ;
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
 

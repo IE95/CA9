@@ -15,10 +15,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 
-@WebServlet("/addUserRole")
+
 public class AddUserRole extends HttpServlet {
 
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		int userId=0;
 		String message ="",role="";
 		String json = "{\"result\":" ;
@@ -65,7 +65,7 @@ public class AddUserRole extends HttpServlet {
         out.println(json);
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
 }

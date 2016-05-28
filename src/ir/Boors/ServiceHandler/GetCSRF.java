@@ -7,19 +7,26 @@ import javax.servlet.annotation.*;
 
 import java.io.*;
 import java.io.PrintWriter;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.LinkedList;
 import java.sql.*;
 
-public class Logout extends HttpServlet {
+
+@WebServlet("/getCSRF")
+public class GetCSRF extends HttpServlet {
 	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
-		req.getSession(true).invalidate();	
-		resp.sendRedirect("home.html");
+		
+		try{
+			int csrf = DAO.getCSRF(req.getSession().getId());
+			
+			resp.getWriter().println(csrf);
+		}
+		catch(SQLException e){
+			resp.getWriter().println(e.getMessage());
+		}
 	}
 
 	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
-
 }

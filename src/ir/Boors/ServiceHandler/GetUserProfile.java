@@ -13,9 +13,9 @@ import java.sql.*;
 
 
 
-@WebServlet("/getUserProfile")
+
 public class GetUserProfile extends HttpServlet {
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		int id ;
 		String json = "{\"result\":" ;
 		String errMsg="";
@@ -52,7 +52,7 @@ public class GetUserProfile extends HttpServlet {
         out.println(json);
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
 }

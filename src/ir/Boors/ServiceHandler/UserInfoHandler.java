@@ -11,9 +11,8 @@ import java.util.List;
 import java.util.LinkedList;
 import java.sql.*;
 
-@WebServlet("/userinfo")
 public class UserInfoHandler extends HttpServlet {
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		int id ;
 		String json = "{\"result\":" ;
 		String errMsg="";
@@ -51,7 +50,7 @@ public class UserInfoHandler extends HttpServlet {
         out.println(json);
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
 }

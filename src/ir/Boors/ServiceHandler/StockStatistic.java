@@ -12,9 +12,9 @@ import java.util.LinkedList;
 import java.sql.*;
 
 
-@WebServlet("/getMyStockStatistic")
+
 public class StockStatistic extends HttpServlet {
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 
 		boolean hasError = false;
 		String message = "" ;
@@ -69,7 +69,7 @@ public class StockStatistic extends HttpServlet {
 		
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		
 	}
 }

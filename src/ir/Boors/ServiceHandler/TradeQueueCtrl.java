@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.LinkedList;
 import java.sql.*;
 
-@WebServlet("/tradeQueue")
+
 public class TradeQueueCtrl extends HttpServlet {
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		String stockId ;
 		String message = "";
 		Stock stock = null;
@@ -47,7 +47,7 @@ public class TradeQueueCtrl extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
 		

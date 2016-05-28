@@ -11,10 +11,8 @@ import java.util.List;
 import java.util.LinkedList;
 import java.sql.*;
 
-
-@WebServlet("/getExpensiveRequests")
 public class GetExpensive extends HttpServlet {
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		String name;
 		boolean hasError = false;
 		String message = "" ;
@@ -46,7 +44,7 @@ public class GetExpensive extends HttpServlet {
 		out.print(sb.toString());
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
 }

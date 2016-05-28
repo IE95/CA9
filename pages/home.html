@@ -29,7 +29,7 @@
     </div>
   </nav>
 
-
+  {{ctrl.csrfToken}}
 
 
   <div ng-show="ctrl.seeProfilePermission" class="jumbotron">
@@ -405,7 +405,7 @@
   </table>
 </div>
 
-  <div ng-show="setTradeLimitPermission" class="col-xs-4">
+  <div ng-show="ctrl.setTradeLimitPermission" class="col-xs-4">
     <p class="margin"> transaction Limitation </p>
     <form name="limitation">
       <input type="text" class="form-control margin" ng-model="transactionLimitation" placeholder="transaction limitation" required/>

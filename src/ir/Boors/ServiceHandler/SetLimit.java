@@ -12,14 +12,14 @@ import java.util.LinkedList;
 import java.sql.*;
 
 
-@WebServlet("/setLimit")
+
 public class SetLimit extends HttpServlet {
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		
 		
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		String name;
 		boolean hasError = false;
 		String message = "" ;

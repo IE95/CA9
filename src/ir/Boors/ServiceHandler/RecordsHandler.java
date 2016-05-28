@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.LinkedList;
 import java.sql.*;
 
-@WebServlet("/records")
+
 public class RecordsHandler extends HttpServlet {
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		String json = "{\"result\":1,\"records\":[" ;
 		try{
 			for (Record r : DAO.getRecords()) {
@@ -33,7 +33,7 @@ public class RecordsHandler extends HttpServlet {
         out.println(json);
 	}
 
-	protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
 		

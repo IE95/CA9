@@ -480,15 +480,16 @@ public class DAO {
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();
 		ResultSet rs = st.executeQuery("select * from config where name='"+sessionId +"'");
-		con.close();
 		if(rs.next()){
 			int csrf = rs.getInt("value");	
+			con.close();
 			return csrf;
 		}
 		else{
 			Random rnd = new Random();
 			int csrf = 100000 + rnd.nextInt(900000);
 			st.executeUpdate("insert into config values ('"+sessionId+"',"+csrf+")");
+			con.close();
 			return csrf;
 		}
 		

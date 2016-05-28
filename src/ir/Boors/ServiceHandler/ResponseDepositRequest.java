@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.LinkedList;
 import java.sql.*;
 
-@WebServlet("/responseDepositRequest")
+
 public class ResponseDepositRequest extends HttpServlet {
 
-	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {		
+	public void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {		
 	int requestId = 0 ,userId=0;				
 	String message ="", command = "";
 	String json = "{\"result\":" ;
@@ -64,7 +64,7 @@ public class ResponseDepositRequest extends HttpServlet {
 	out.println(json);
 }
 
-protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+public void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
 	doGet(req,resp);
 }
 

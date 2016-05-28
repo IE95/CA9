@@ -14,35 +14,63 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+
+
 
 public class FrontController extends HttpServlet {
 
 	// URLs must have the form /polling/ControllerClass.action
 	// the execute() method of the ControllerClass will be called
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		StringBuffer url = request.getRequestURL();
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String className = request.getServletPath().substring(1);
 		try {
-			// HttpSession session = request.getSession();
-			// if (session != null && session.getAttribute("user") == null) {
-				
-			// }
-			request.getRequestDispatcher(url.toString()).forward(request, response);
-		
-			// ex.printStackTrace();
-			// response.setContentType("text/html");
-			// if (ex.getTargetException() instanceof SQLException)
-			// 	response.getOutputStream().println("Error in accessing database!<p>Contact system administrator");
-			// else
-			// 	response.getOutputStream().println("Internal system error!<p>Contact system administrator");
+			//check csrf
+			int serverSide = DAO.getCSRF(request.getSession().getId());
+			int userSide = Integer.parseInt(request.getParameter("csrf").trim());
+			if(serverSide != userSide){
+				response.getWriter().println("CSRF ATTACK");
+				response.setStatus(400);
+				return;
+			}
+			Class ctrlClass = Class.forName("ir.Boors.ServiceHandler." + className);
+			Method m = ctrlClass.getMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
+			m.invoke(ctrlClass.newInstance(), request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
+
 			response.setContentType("text/html");
-			response.getOutputStream().println("Internal system error!<p>Contact system administrator");
+			response.setStatus(400);
+			response.getWriter().println("CSRF ATTACK");
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String className = request.getServletPath().substring(1);
+		try {
+			//check csrf
+			int serverSide = DAO.getCSRF(request.getSession().getId());
+			int userSide = Integer.parseInt(request.getParameter("csrf").trim());
+			if(serverSide != userSide){
+				response.getWriter().println("CSRF ATTACK");
+				response.setStatus(400);
+				return;
+			}
+			Class ctrlClass = Class.forName("ir.Boors.ServiceHandler." + className);
+			Method m = ctrlClass.getMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
+			m.invoke(ctrlClass.newInstance(), request, response);
+		} catch (Exception e) {
+	
+			response.setContentType("text/html");
+			response.setStatus(400);
+			response.getWriter().println("CSRF ATTACK");
+		}
 	}
 
 }
