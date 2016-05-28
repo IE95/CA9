@@ -31,7 +31,7 @@ public class FrontController extends HttpServlet {
 
 	private boolean checkCharacters(String input){
 		if(input.contains("'")||input.contains("\"")||input.contains("%")||
-			input.contains("\n")||input.contains("\t")||input.contains("_")||
+			input.contains("\n")||input.contains("\t")||
 			input.contains("\\")||input.contains(";")||input.contains(":"))
 			return true;
 		return false;
