@@ -412,6 +412,9 @@
             }
 
         }
+
+        
+        
         this.getUserInfo();
         this.getStockList("all");
         stop = $interval(function() {boorsCtrl.getStockList("all");}, 15000);

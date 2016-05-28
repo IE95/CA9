@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
+import java.util.Random;
 import java.math.*;
 import java.io.*;
 import java.io.PrintWriter;
@@ -480,16 +480,18 @@ public class DAO {
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();
 		ResultSet rs = st.executeQuery("select * from config where name='"+sessionId +"'");
+		con.close();
 		if(rs.next()){
 			int csrf = rs.getInt("value");	
 			return csrf;
 		}
 		else{
-			int csrf = Math.floor(100000 + Math.random() * 900000);
+			Random rnd = new Random();
+			int csrf = 100000 + rnd.nextInt(900000);
 			st.executeUpdate("insert into config values ('"+sessionId+"',"+csrf+")");
 			return csrf;
 		}
-		con.close();
+		
 	}
 
 	public static void delCSRF(String sessionId)throws SQLException{

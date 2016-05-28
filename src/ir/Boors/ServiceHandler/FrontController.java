@@ -20,20 +20,20 @@ public class FrontController extends HttpServlet {
 	// URLs must have the form /polling/ControllerClass.action
 	// the execute() method of the ControllerClass will be called
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String url = request.getRequestURL();
+		StringBuffer url = request.getRequestURL();
 		try {
 			// HttpSession session = request.getSession();
 			// if (session != null && session.getAttribute("user") == null) {
 				
 			// }
-			request.getRequestDispatcher(url).forward(request, response);
-		} catch (InvocationTargetException ex) {
-			ex.printStackTrace();
-			response.setContentType("text/html");
-			if (ex.getTargetException() instanceof SQLException)
-				response.getOutputStream().println("Error in accessing database!<p>Contact system administrator");
-			else
-				response.getOutputStream().println("Internal system error!<p>Contact system administrator");
+			request.getRequestDispatcher(url.toString()).forward(request, response);
+		
+			// ex.printStackTrace();
+			// response.setContentType("text/html");
+			// if (ex.getTargetException() instanceof SQLException)
+			// 	response.getOutputStream().println("Error in accessing database!<p>Contact system administrator");
+			// else
+			// 	response.getOutputStream().println("Internal system error!<p>Contact system administrator");
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.setContentType("text/html");
