@@ -28,6 +28,15 @@ public class FrontController extends HttpServlet {
 
 	// URLs must have the form /polling/ControllerClass.action
 	// the execute() method of the ControllerClass will be called
+
+	private boolean checkCharacters(String input){
+		if(input.contains("'")||input.contains("\"")||input.contains("%")||
+			input.contains("\n")||input.contains("\t")||input.contains("_")||
+			input.contains("\\")||input.contains(";")||input.contains(":"))
+			return true;
+		return false;
+	}
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String className = request.getServletPath().substring(1);
 		try {
@@ -39,6 +48,23 @@ public class FrontController extends HttpServlet {
 				response.setStatus(400);
 				return;
 			}
+
+			//sql injection check
+			java.util.Enumeration enu = request.getParameterNames();
+         	while(enu.hasMoreElements()){
+             	String paramName = (String)enu.nextElement();
+            	String input = request.getParameter(paramName).toString();
+            	try{
+            		Integer.parseInt(input);
+            	}
+            	catch(NumberFormatException e){
+		        	if(input!=null && checkCharacters(input)==true){
+		        		response.getWriter().println("SQLInjection "+ input);
+						response.setStatus(400);
+						return;
+		        	}
+            	}
+        	}
 			Class ctrlClass = Class.forName("ir.Boors.ServiceHandler." + className);
 			Method m = ctrlClass.getMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
 			m.invoke(ctrlClass.newInstance(), request, response);
@@ -62,6 +88,24 @@ public class FrontController extends HttpServlet {
 				response.setStatus(400);
 				return;
 			}
+
+			//sql injection
+			java.util.Enumeration enu = request.getParameterNames();
+         	while(enu.hasMoreElements()){
+             	String paramName = (String)enu.nextElement();
+            	String input = request.getParameter(paramName).toString().trim();
+            	try{
+            		Integer.parseInt(input);
+            	}
+            	catch(NumberFormatException e){
+		        	if(input!=null && checkCharacters(input)==true){
+		        		response.getWriter().println("SQLInjection "+ input);
+						response.setStatus(400);
+						return;
+		        	}
+            	}
+        	}
+
 			Class ctrlClass = Class.forName("ir.Boors.ServiceHandler." + className);
 			Method m = ctrlClass.getMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
 			m.invoke(ctrlClass.newInstance(), request, response);

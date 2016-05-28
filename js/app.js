@@ -433,8 +433,8 @@
         }
 
         
-        $timeout(function(){boorsCtrl.getUserInfo()}, 3000);
-        $timeout(function(){boorsCtrl.getStockList("all")}, 3000);
+        $timeout(function(){boorsCtrl.getUserInfo()}, 1000);
+        $timeout(function(){boorsCtrl.getStockList("all")}, 1000);
  
         
         stop = $interval(function() {boorsCtrl.getStockList("all");}, 15000);
